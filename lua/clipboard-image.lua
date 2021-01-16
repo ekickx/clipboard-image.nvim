@@ -1,37 +1,44 @@
-local cmd = vim.cmd
 local M = {}
+local cmd = vim.cmd
+local config = {
+  img_dir = 'img',
+  paste_img_name = tostring(os.date("%Y-%m-%d-%H-%M-%S")),
+}
 
-local generate_name = function ()
-  return os.date("%Y-%m-%d-%H-%M-%S.png")
+M.setup = function (opts)
+  config = vim.tbl_extend('force', config, opts or {})
+  M.create_command()
 end
 
-function M.paste_image()
-  local image_relative_path = 'img'
-  local paste_image_name = generate_name()
-  local paste_image_path = image_relative_path..'/'..paste_image_name
+M.paste_img = function ()
+  local img_path = config['img_dir']..'/'..config['paste_img_name']..'.png'
 
-  if vim.fn.isdirectory(image_relative_path) == 0 then
-    vim.fn.mkdir(image_relative_path, 'p')
+  if vim.fn.isdirectory(config['img_dir']) == 0 then
+    vim.fn.mkdir(config['img_dir'], 'p')
   end
 
-  os.execute('xclip -selection clipboard -t image/png -o >'..paste_image_path)
-  cmd("normal i"..paste_image_path)
+  os.execute('xclip -selection clipboard -t image/png -o >'..img_path)
+  cmd("normal i"..img_path)
 end
 
-function M.delete_image()
-  local start_line_num = vim.fn.getpos("'<")[2]
-  local end_line_num = vim.fn.getpos("'>")[2]
+M.delete_img = function ()
+  local start_line = vim.fn.getpos("'<")[2]
+  local end_line = vim.fn.getpos("'>")[2]
   local start_col = vim.fn.getpos("'<")[3]
   local end_col = vim.fn.getpos("'>")[3]
 
-  local img_path = vim.fn.getline(start_line_num, end_line_num)[1]:sub(start_col, end_col)
+  local img_path = vim.fn.getline(start_line, end_line)[1]:sub(start_col, end_col)
 
   vim.fn.delete(vim.fn.fnameescape(img_path))
 end
 
-function M.create_command()
-  cmd("command! PasteImage :lua require'clipboard-image'.paste_image()")
-  cmd("command! DeleteImage :lua require'clipboard-image'.delete_image()")
+M.get_config = function ()
+  return config
+end
+
+M.create_command = function ()
+  cmd("command! PasteImg :lua require'clipboard-image'.paste_img()")
+  cmd("command! DeleteImg :lua require'clipboard-image'.delete_img()")
 end
 
 return M

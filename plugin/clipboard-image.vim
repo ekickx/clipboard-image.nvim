@@ -11,7 +11,7 @@ if !has('nvim')
   finish
 endif
 
-lua require'clipboard-image'.create_command()
+lua require'clipboard-image'.setup()
 let g:clipboard_image_loaded = 1
 
 let &cpo = s:save_cpo
