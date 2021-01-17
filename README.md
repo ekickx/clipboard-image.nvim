@@ -1,3 +1,8 @@
+# Requirement
+
+- `xclip` for x11
+- `wl-clipboard` for wayland
+
 # Install
 
 You can install it using `packer`
