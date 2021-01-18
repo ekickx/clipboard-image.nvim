@@ -20,16 +20,16 @@ local clipboard_type = function ()
   local command = io.popen(check_type)
   local outputs = {}
 
-  -- store output to table
+  -- store output to outputs's table
   for output in command:lines() do
     table.insert(outputs, output)
   end
-  return outputs[1] -- return the first output
+  return outputs
 end
 
 -- Paste image on linux device
 local paste_on_linux = function ()
-  if clipboard_type() ~= 'image/png' then
+  if not vim.tbl_contains(clipboard_type(), 'image/png') then
     print('There is no image data in clipboard')
   else
     local img_path = config['img_dir']..'/'..config['paste_img_name']..'.png'
