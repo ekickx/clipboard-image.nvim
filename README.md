@@ -11,6 +11,11 @@ You can install it using `packer`
 use 'ekickx/clipboard-image.nvim'
 ```
 
+# Command
+
+- `:PasteImg`
+- `:DeleteImg`
+
 # Default config
 
 ```lua
