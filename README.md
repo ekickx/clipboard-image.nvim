@@ -1,3 +1,8 @@
+# Requirement
+
+- `xclip` for x11
+- `wl-clipboard` for wayland
+
 # Install
 
 You can install it using `packer`
@@ -5,6 +10,11 @@ You can install it using `packer`
 ```lua
 use 'ekickx/clipboard-image.nvim'
 ```
+
+# Command
+
+- `:PasteImg`
+- `:DeleteImg`
 
 # Default config
 
