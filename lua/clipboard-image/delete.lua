@@ -8,7 +8,10 @@ M.delete_img = function ()
 
   local img_path = vim.fn.getline(start_line, end_line)[1]:sub(start_col, end_col)
 
+  -- Delete image file
   vim.fn.delete(vim.fn.fnameescape(img_path))
+  -- Delete image text
+  vim.cmd("s/"..vim.fn.escape(img_path, "/").."/")
 end
 
 return M

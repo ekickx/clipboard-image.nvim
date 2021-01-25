@@ -16,7 +16,7 @@ end
 
 M.create_command = function ()
   cmd("command! PasteImg :lua require'clipboard-image.paste'.paste_img()")
-  cmd("command! DeleteImg :lua require'clipboard-image.delete'.delete_img()")
+  cmd("command! -range DeleteImg :lua require'clipboard-image.delete'.delete_img()")
 end
 
 return M

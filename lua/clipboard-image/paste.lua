@@ -40,7 +40,7 @@ local paste_on_linux = function ()
     end
 
     os.execute(cmd_clip..img_path) -- paste image to img_path
-    cmd("normal i"..img_path) -- insert img_path
+    cmd("normal a"..img_path) -- insert img_path
   end
 end
 
