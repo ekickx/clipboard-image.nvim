@@ -7,7 +7,7 @@
 
 # Install
 
-You can install it using `packer`
+You can install it using [packer](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use 'ekickx/clipboard-image.nvim'
@@ -22,7 +22,8 @@ use 'ekickx/clipboard-image.nvim'
 
 ```lua
 require'clipboard-image'.setup {
-  img_dir = 'img',
-  paste_img_name = tostring(os.date("%Y-%m-%d-%H-%M-%S"))
+  img_dir = "return 'img'",
+  img_dir_txt = "return 'img'",
+  img_name = "return os.date('%Y-%m-%d-%H-%M-%S')"
 }
 ```
