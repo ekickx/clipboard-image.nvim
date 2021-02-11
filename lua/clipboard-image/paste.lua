@@ -48,22 +48,28 @@ end
 M.paste_img = function ()
   -- load config
   local config = require'clipboard-image'.get_config()
-  local img_dir = loadstring(config.img_dir)
-  local img_dir_txt = loadstring(config.img_dir_txt)
-  local img_name = loadstring(config.img_name)
+
+  local load_img_dir = loadstring(config.img_dir)
+  local img_dir = load_img_dir()
+
+  local load_img_dir_txt = loadstring(config.img_dir_txt)
+  local img_dir_txt = load_img_dir_txt()
+
+  local load_img_name = loadstring(config.img_name)
+  local img_name = load_img_name()
 
   -- check wether clipboard content's image or not
   if not vim.tbl_contains(clipboard_type(), 'image/png') then
     print('There is no image data in clipboard')
   else
     -- create img_dir if it doesn't exist
-    create_dir(img_dir())
+    create_dir(img_dir)
 
     -- paste image to its path
-    paste_img_to(img_path(img_dir(), img_name()))
+    paste_img_to(img_path(img_dir, img_name))
 
     -- insert image's path
-    cmd("normal a"..img_path(img_dir_txt(), img_name()))
+    cmd("normal a"..img_path(img_dir_txt, img_name))
   end
 end
 
