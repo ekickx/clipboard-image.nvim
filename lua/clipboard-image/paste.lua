@@ -1,23 +1,23 @@
 local M = {}
 local cmd = vim.cmd
-local config = require'clipboard-image'.get_config()
+local fn = vim.fn
 
 -- Check OS and display server
-local check_type = '' -- var to store command to check clipboard content's type
-local cmd_clip = '' -- var to store command to paste clipboard content
+local cmd_check = '' -- var to store command to check clipboard content's type
+local cmd_paste = '' -- var to store command to paste clipboard content
 if package.config:sub(1,1) == '/' then
   if os.getenv('XDG_SESSION_TYPE') == 'x11' then
-    check_type = 'xclip -selection clipboard -o -t TARGETS'
-    cmd_clip = 'xclip -selection clipboard -t image/png -o >'
+    cmd_check = 'xclip -selection clipboard -o -t TARGETS'
+    cmd_paste = 'xclip -selection clipboard -t image/png -o >'
   elseif os.getenv('XDG_SESSION_TYPE') == 'wayland' then
-    check_type = 'wl-paste --list-types'
-    cmd_clip = 'wl-paste --no-newline --type image/png >'
+    cmd_check = 'wl-paste --list-types'
+    cmd_paste = 'wl-paste --no-newline --type image/png >'
   end
 end
 
--- Check whether the clipboard content is image or not
+-- Function that return clipboard content's type
 local clipboard_type = function ()
-  local command = io.popen(check_type)
+  local command = io.popen(cmd_check)
   local outputs = {}
 
   -- store output to outputs's table
@@ -27,26 +27,49 @@ local clipboard_type = function ()
   return outputs
 end
 
--- Paste image on linux device
-local paste_on_linux = function ()
-  if not vim.tbl_contains(clipboard_type(), 'image/png') then
-    print('There is no image data in clipboard')
-  else
-    local img_path = config['img_dir']..'/'..config['paste_img_name']..'.png'
-
-    -- create img_dir if doesn't exist
-    if vim.fn.isdirectory(config['img_dir']) == 0 then
-      vim.fn.mkdir(config['img_dir'], 'p')
-    end
-
-    os.execute(cmd_clip..img_path) -- paste image to img_path
-    cmd("normal a"..img_path) -- insert img_path
+-- Function that create dir if it doesn't exist
+local create_dir = function (dir)
+  -- create img_dir if doesn't exist
+  if fn.isdirectory(dir) == 0 then
+    fn.mkdir(dir, 'p')
   end
 end
 
+-- Function that paste image to *path*
+local paste_img_to = function (path)
+  os.execute(cmd_paste..path)
+end
+
+-- Create image's path from dir and img_name
+local img_path = function (dir, img)
+  return dir..'/'..img..'.png'
+end
+
 M.paste_img = function ()
-  if package.config:sub(1,1) == '/' then
-    paste_on_linux()
+  -- load config
+  local config = require'clipboard-image'.get_config()
+
+  local load_img_dir = loadstring(config.img_dir)
+  local img_dir = load_img_dir()
+
+  local load_img_dir_txt = loadstring(config.img_dir_txt)
+  local img_dir_txt = load_img_dir_txt()
+
+  local load_img_name = loadstring(config.img_name)
+  local img_name = load_img_name()
+
+  -- check wether clipboard content's image or not
+  if not vim.tbl_contains(clipboard_type(), 'image/png') then
+    print('There is no image data in clipboard')
+  else
+    -- create img_dir if it doesn't exist
+    create_dir(img_dir)
+
+    -- paste image to its path
+    paste_img_to(img_path(img_dir, img_name))
+
+    -- insert image's path
+    cmd("normal a"..img_path(img_dir_txt, img_name))
   end
 end
 

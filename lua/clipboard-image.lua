@@ -1,13 +1,19 @@
 local M = {}
 local cmd = vim.cmd
+
 local config = {
-  img_dir = 'img',
-  paste_img_name = tostring(os.date("%Y-%m-%d-%H-%M-%S")),
+  img_dir = "return 'img'",
+  img_dir_txt = "return 'img'",
+  img_name = "return os.date('%Y-%m-%d-%H-%M-%S')"
 }
 
 M.setup = function (opts)
-  config = vim.tbl_extend('force', config, opts or {})
+  M.merge_config(config, opts)
   M.create_command()
+end
+
+M.merge_config = function (old_opts, new_opts)
+  config = vim.tbl_extend('force', old_opts, new_opts or {})
 end
 
 M.get_config = function ()
