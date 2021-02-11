@@ -4,7 +4,9 @@ local cmd = vim.cmd
 local config = {
   img_dir = "return 'img'",
   img_dir_txt = "return 'img'",
-  img_name = "return os.date('%Y-%m-%d-%H-%M-%S')"
+  img_name = "return os.date('%Y-%m-%d-%H-%M-%S')",
+  prefix = "return ''",
+  suffix = "return ''",
 }
 
 M.setup = function (opts)

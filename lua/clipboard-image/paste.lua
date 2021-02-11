@@ -58,6 +58,12 @@ M.paste_img = function ()
   local load_img_name = loadstring(config.img_name)
   local img_name = load_img_name()
 
+  local load_prefix = loadstring(config.prefix)
+  local prefix = load_prefix()
+
+  local load_suffix = loadstring(config.suffix)
+  local suffix = load_suffix()
+
   -- check wether clipboard content's image or not
   if not vim.tbl_contains(clipboard_type(), 'image/png') then
     print('There is no image data in clipboard')
@@ -69,7 +75,7 @@ M.paste_img = function ()
     paste_img_to(img_path(img_dir, img_name))
 
     -- insert image's path
-    cmd("normal a"..img_path(img_dir_txt, img_name))
+    cmd("normal a"..prefix..img_path(img_dir_txt, img_name)..suffix)
   end
 end
 
