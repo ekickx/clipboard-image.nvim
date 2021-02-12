@@ -2,11 +2,11 @@ local M = {}
 local cmd = vim.cmd
 
 local config = {
-  img_dir = "return 'img'",
-  img_dir_txt = "return 'img'",
-  img_name = "return os.date('%Y-%m-%d-%H-%M-%S')",
-  prefix = "return ''",
-  suffix = "return ''",
+  img_dir = function () return 'img' end,
+  img_dir_txt = function () return 'img' end,
+  img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
+  prefix = function () return '' end,
+  suffix = function () return '' end,
 }
 
 M.setup = function (opts)

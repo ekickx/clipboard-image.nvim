@@ -48,21 +48,11 @@ end
 M.paste_img = function ()
   -- load config
   local config = require'clipboard-image'.get_config()
-
-  local load_img_dir = loadstring(config.img_dir)
-  local img_dir = load_img_dir()
-
-  local load_img_dir_txt = loadstring(config.img_dir_txt)
-  local img_dir_txt = load_img_dir_txt()
-
-  local load_img_name = loadstring(config.img_name)
-  local img_name = load_img_name()
-
-  local load_prefix = loadstring(config.prefix)
-  local prefix = load_prefix()
-
-  local load_suffix = loadstring(config.suffix)
-  local suffix = load_suffix()
+  local img_dir = config.img_dir()
+  local img_dir_txt = config.img_dir_txt()
+  local img_name = config.img_name()
+  local prefix = config.prefix()
+  local suffix = config.suffix()
 
   -- check wether clipboard content's image or not
   if not vim.tbl_contains(clipboard_type(), 'image/png') then
