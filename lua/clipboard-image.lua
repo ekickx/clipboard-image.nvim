@@ -1,5 +1,4 @@
 local M = {}
-local cmd = vim.cmd
 
 local config = {
   img_dir = function () return 'img' end,
@@ -11,7 +10,6 @@ local config = {
 
 M.setup = function (opts)
   M.merge_config(config, opts)
-  M.create_command()
 end
 
 M.merge_config = function (old_opts, new_opts)
@@ -20,11 +18,6 @@ end
 
 M.get_config = function ()
   return config
-end
-
-M.create_command = function ()
-  cmd("command! PasteImg :lua require'clipboard-image.paste'.paste_img()")
-  cmd("command! -range DeleteImg :lua require'clipboard-image.delete'.delete_img()")
 end
 
 return M
