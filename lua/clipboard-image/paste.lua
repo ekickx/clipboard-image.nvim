@@ -23,11 +23,12 @@ if get_os() == 'Linux' then
   end
 elseif get_os() == 'Windows' then
   cmd_check = 'Get-Clipboard -Format Image'
-  cmd_paste = '$content = '..cmd_check..';$content.Save(%s, \'png\')'
-  cmd_paste = 'powershell.exe -sta \"'..cmd_paste..'\"'
+  cmd_paste = '$content = '..cmd_check..';$content.Save(\'%s\', \'png\')'
+  cmd_check = 'powershell.exe \"'..cmd_check..'\"'
+  cmd_paste = 'powershell.exe \"'..cmd_paste..'\"'
 end
 
--- Function that return clipboard content's type
+-- Function that return clipboard content's type (txt, img, etc)
 local get_clipboard_type = function ()
   local command = io.popen(cmd_check)
   local outputs = {}
@@ -44,8 +45,7 @@ local is_clipboard_img = function ()
   if get_os() == 'Linux' and
       vim.tbl_contains(get_clipboard_type(), 'image/png') then
     return true
-  elseif get_os() == 'Windows' and
-    (get_clipboard_type() ~= nil or get_clipboard_type() ~= '') then
+  elseif get_os() == 'Windows' and get_clipboard_type()[1] ~= nil then
     return true
   else
     return false
@@ -66,8 +66,8 @@ local paste_img_to = function (path)
 end
 
 -- Create image's path from dir and img_name
-local img_path = function (dir, img)
-  if get_os() == 'Windows' then
+local img_path = function (dir, img, txt)
+  if txt ~= 'txt' and get_os() == 'Windows' then
     return dir..'\\'..img..'.png'
   else
     return dir..'/'..img..'.png'
@@ -90,11 +90,11 @@ M.paste_img = function ()
     -- Create img_dir if it doesn't exist
     create_dir(img_dir)
 
-    -- Paste image to its path
+    -- Paste image to it's path
     paste_img_to(img_path(img_dir, img_name))
 
     -- Insert text
-    cmd("normal a"..prefix..img_path(img_dir_txt, img_name)..suffix)
+    cmd("normal a"..prefix..img_path(img_dir_txt, img_name, 'txt')..suffix)
   end
 end
 
