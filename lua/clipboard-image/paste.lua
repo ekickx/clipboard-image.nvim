@@ -80,21 +80,27 @@ M.paste_img = function ()
     print('There is no image data in clipboard')
   else
     -- Load config
-    local config = require'clipboard-image'.get_config()
-    local img_dir = config.img_dir()
-    local img_dir_txt = config.img_dir_txt()
-    local img_name = config.img_name()
-    local prefix = config.prefix()
-    local suffix = config.suffix()
+    local conf_toload = require'clipboard-image'.get_config()
+    local conf = {}
+    for key, value in pairs(conf_toload) do
+      -- If config is a function than load it first
+      if type(conf_toload[key]) == "function" then
+        conf[key] = conf_toload[key]()
+      else
+        conf[key] = value
+      end
+    end
 
     -- Create img_dir if it doesn't exist
-    create_dir(img_dir)
+    create_dir(conf.img_dir)
 
     -- Paste image to it's path
-    paste_img_to(img_path(img_dir, img_name))
+    paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text
-    cmd("normal a"..prefix..img_path(img_dir_txt, img_name, 'txt')..suffix)
+    local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
+    local pasted_txt = conf.prefix..path_txt..conf.suffix
+    cmd("normal a"..pasted_txt)
   end
 end
 

@@ -1,11 +1,11 @@
 local M = {}
 
 local config = {
-  img_dir = function () return 'img' end,
-  img_dir_txt = function () return 'img' end,
+  img_dir = 'img',
+  img_dir_txt = 'img',
   img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-  prefix = function () return '' end,
-  suffix = function () return '' end,
+  prefix = '',
+  suffix = '',
 }
 
 M.setup = function (opts)
