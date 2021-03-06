@@ -29,8 +29,8 @@ elseif get_os() == 'Windows' then
 end
 
 -- Function that return clipboard content's type (txt, img, etc)
-local get_clipboard_type = function ()
-  local command = io.popen(cmd_check)
+local get_clip_content = function (command)
+  command = io.popen(command)
   local outputs = {}
 
   -- Store output to outputs's table
@@ -41,11 +41,10 @@ local get_clipboard_type = function ()
 end
 
 -- Function to check wether clipboard content is image or not
-local is_clipboard_img = function ()
-  if get_os() == 'Linux' and
-      vim.tbl_contains(get_clipboard_type(), 'image/png') then
+local is_clipboard_img = function (content)
+  if get_os() == 'Linux' and vim.tbl_contains(content, 'image/png') then
     return true
-  elseif get_os() == 'Windows' and get_clipboard_type()[1] ~= nil then
+  elseif get_os() == 'Windows' and content ~= nil then
     return true
   else
     return false
@@ -66,8 +65,8 @@ local paste_img_to = function (path)
 end
 
 -- Create image's path from dir and img_name
-local img_path = function (dir, img, txt)
-  if txt ~= 'txt' and get_os() == 'Windows' then
+local img_path = function (dir, img, istxt)
+  if get_os() == 'Windows' and istxt ~= 'txt'  then
     return dir..'\\'..img..'.png'
   else
     return dir..'/'..img..'.png'
@@ -76,7 +75,7 @@ end
 
 M.paste_img = function ()
   -- Check wether clipboard content is image or not
-  if is_clipboard_img() ~= true then
+  if is_clipboard_img(get_clip_content(cmd_check)) ~= true then
     print('There is no image data in clipboard')
   else
     -- Load config
