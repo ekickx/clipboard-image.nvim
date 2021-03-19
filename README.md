@@ -20,7 +20,6 @@ use 'ekickx/clipboard-image.nvim'
 # Use
 
 - `:PasteImg` or `:lua require'clipboard-image.paste'.paste_img()`
-- `:DeleteImg` or `:lua require'clipboard-image.delete'.delete_img()`
 
 # Config
 

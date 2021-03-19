@@ -16,7 +16,6 @@ let g:clipboard_image_loaded = 1
 
 " Create vim command
 command! PasteImg :lua require'clipboard-image.paste'.paste_img()
-command! -range DeleteImg :lua require'clipboard-image.delete'.delete_img()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
