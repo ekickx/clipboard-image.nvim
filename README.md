@@ -1,5 +1,9 @@
 # Requirement
 
+This plugin currently only supports Windows and Linux.
+
+On Linux, you will need:
+
 - `xclip` for x11
 - `wl-clipboard` for wayland
 
@@ -29,24 +33,22 @@ After the plugin installed, you can already use it with the default config like 
 
 ```lua
 require'clipboard-image'.setup {
-  img_dir = function () return 'img' end,
-  img_dir_txt = function () return 'img' end,
+  img_dir = 'img',
+  img_dir_txt = 'img',
   img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-  prefix = function () return '' end,
-  suffix = function () return '' end,
+  prefix = '',
+  suffix = '',
 }
 ```
 
 ## Config example
 
-> Note: Your config must be a function that have a return value.
-
 For example, I use [11ty](https://www.11ty.dev/) to generate a static site from my markdown. I want to save my image on `src/assets/img` And instead of based on date, I want my image's name to be `image1`, `image2`, etc. But I want the pasted text to be `/assets/img/image1` instead of `src/assets/img/image1`. So the config will be like this:
 
 ```lua
 require'clipboard-image'.setup {
-  img_dir = function () return 'src/assets/img' end,
-  img_dir_txt = function () return '/assets/img' end,
+  img_dir = 'src/assets/img',
+  img_dir_txt = '/assets/img',
   img_name = function ()
     local img_dir = require'clipboard-image'.get_config().img_dir()
     local index = 1
@@ -59,8 +61,8 @@ require'clipboard-image'.setup {
     end
     return 'image'..index
   end,
-  prefix = function () return '![](' end,
-  suffix = function () return ')' end
+  prefix = '![](',
+  suffix = ')'
 }
 ```
 
