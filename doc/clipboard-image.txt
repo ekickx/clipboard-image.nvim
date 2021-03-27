@@ -1,0 +1,129 @@
+*clipboard-image.txt*        for Neovim 0.4.3+       Last modified: 03 May 2021
+
+Author: Ghani Rafif
+Repo: <github.com/ekickx/clipboard-image.nvim>
+License: MIT
+
+===============================================================================
+INTRODUCTION                                                  *clipboard-image*
+
+Clipboard-image is a neovim plugin to copy image from your clipboard. 
+To configure this plugin, see |clipboard-image-config|.
+
+===============================================================================
+REQUIREMENTS                                      *clipboard-image-requirement*
+
+Clipboard-image only works on Neovim version that support lua.
+
+For linux user you also need xclip if you are on X11 or wl-clipboard if you are
+on wayland.
+
+===============================================================================
+USAGE                                                   *clipboard-image-usage*
+
+See the available commands on |clipboard-image-commands| & its Lua functions on
+|clipboard-image-functions|.
+
+Commands~                                            *clipboard-image-commands*
+
+`:PasteImage`                                                     *:PasteImage*
+    This is the command to paste image from your clipboard.
+
+Functions~                                          *clipboard-image-functions* 
+
+`clipboard-image.setup()`                               *clipboard-image.setup*
+    Setup your config. When you load this plugin, it also runs this function to
+    setup the default config.
+
+    See |clipboard-image-config| for more info about the config's options.
+
+
+`clipboard-image.get_config()`                     *clipboard-image.get_config*
+    This function return the value of this plugin's current config.
+
+    If you want to print the value of this function, you can use this command: 
+    `:lua print(vim.inspect(require'clipboard-image'.get_config()))`
+
+`clipboard-image.paste.paste_img()`           *clipboard-image.paste.paste_img*
+
+    Paste your clipboard image with this function.
+
+    The command |:PasteImage| actually runs this function.
+
+===============================================================================
+CONFIGURATION                                          *clipboard-image-config*
+
+Options~                                       *clipboard-image-config-options*
+
+Options's value can be string or function.
+
+img_dir                                        *clipboard-image-config-img_dir*
+	Default:
+>
+	  img_dir = 'img'
+<
+	Dir name where the image will be pasted to.
+
+img_dir_txt                                *clipboard-image-config-img_dir_txt*
+	Default:
+>
+	  img_dir_txt = 'img'
+<
+	Text of dir that will be inserted.
+
+	See also |clipboard-image-config-example|
+
+img_name                                      *clipboard-image-config-img_name*
+	Default:
+>
+	  img_name = function ()
+	    return os.date('%Y-%m-%d-%H-%M-%S')
+	  end
+<
+	Pasted image's name.
+
+img_prefix                                  *clipboard-image-config-img_prefix*
+	Default:
+>
+	  img_prefix = ''
+<
+	Image's path's prefix.
+
+img_suffix                                  *clipboard-image-config-img_suffix*
+	Default:
+>
+	  img_suffix = ''
+<
+	Image's path's suffix
+
+
+Example~                                       *clipboard-image-config-example*
+
+For example, I use 11ty to generate a static site from my markdown. I want to
+save my image on 'src/assets/img' And instead of based on date, I want my
+image's name to be image1, image2, etc. But I want the pasted text to be
+'/assets/img/image1' instead of 'src/assets/img/image1'. So the config will be
+like this:
+
+>
+  require'clipboard-image'.setup {
+    img_dir = 'src/assets/img',
+    img_dir_txt = '/assets/img',
+    img_name = function ()
+      local img_dir = require'clipboard-image'.get_config().img_dir()
+      local index = 1
+      for output in io.popen('ls '..img_dir):lines() do
+	if output == 'image'..index..'.png' then
+	  index = index + 1
+	else
+	  break
+	end
+      end
+      return 'image'..index
+    end,
+    prefix = '![](',
+    suffix = ')'
+  }
+<
+
+vim:tw=78:ts=8:noet:ft=help:norl:
