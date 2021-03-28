@@ -29,15 +29,16 @@ use 'ekickx/clipboard-image.nvim'
 
 ## Default config
 
-After the plugin installed, you can already use it with the default config like this:
+After the plugin installed, you can already use it without configuring it.
+
+The default config is like this:
 
 ```lua
 require'clipboard-image'.setup {
   img_dir = 'img',
   img_dir_txt = 'img',
   img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-  prefix = '',
-  suffix = '',
+  affix = '%s'
 }
 ```
 
@@ -61,8 +62,7 @@ require'clipboard-image'.setup {
     end
     return 'image'..index
   end,
-  prefix = '![](',
-  suffix = ')'
+  affix = '![](%s)',
 }
 ```
 

@@ -98,7 +98,7 @@ M.paste_img = function ()
 
     -- Insert text
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
-    local pasted_txt = conf.prefix..path_txt..conf.suffix
+    local pasted_txt = string.format(conf.affix, path_txt)
     cmd("normal a"..pasted_txt)
   end
 end

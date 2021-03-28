@@ -1,4 +1,4 @@
-*clipboard-image.txt*        for Neovim 0.4.3+       Last modified: 03 May 2021
+*clipboard-image.txt*         for Neovim 0.5+        Last modified: 03 May 2021
 
 Author: Ghani Rafif
 Repo: <github.com/ekickx/clipboard-image.nvim>
@@ -29,22 +29,22 @@ Commands~                                            *clipboard-image-commands*
 `:PasteImage`                                                     *:PasteImage*
     This is the command to paste image from your clipboard.
 
-Functions~                                          *clipboard-image-functions* 
+Lua Functions~                                      *clipboard-image-functions* 
 
-`clipboard-image.setup()`                               *clipboard-image.setup*
+`clipboard-image.setup()`                             *clipboard-image.setup()*
     Setup your config. When you load this plugin, it also runs this function to
     setup the default config.
 
     See |clipboard-image-config| for more info about the config's options.
 
 
-`clipboard-image.get_config()`                     *clipboard-image.get_config*
+`clipboard-image.get_config()`                   *clipboard-image.get_config()*
     This function return the value of this plugin's current config.
 
     If you want to print the value of this function, you can use this command: 
     `:lua print(vim.inspect(require'clipboard-image'.get_config()))`
 
-`clipboard-image.paste.paste_img()`           *clipboard-image.paste.paste_img*
+`clipboard-image.paste.paste_img()`         *clipboard-image.paste.paste_img()*
 
     Paste your clipboard image with this function.
 
@@ -82,19 +82,12 @@ img_name                                      *clipboard-image-config-img_name*
 <
 	Pasted image's name.
 
-img_prefix                                  *clipboard-image-config-img_prefix*
+img_affix                                    *clipboard-image-config-img_affix*
 	Default:
 >
-	  img_prefix = ''
+	  img_affix = ''
 <
-	Image's path's prefix.
-
-img_suffix                                  *clipboard-image-config-img_suffix*
-	Default:
->
-	  img_suffix = ''
-<
-	Image's path's suffix
+	Image's path's affix
 
 
 Example~                                       *clipboard-image-config-example*
@@ -121,8 +114,7 @@ like this:
       end
       return 'image'..index
     end,
-    prefix = '![](',
-    suffix = ')'
+    affix = '![](%s)',
   }
 <
 
