@@ -11,7 +11,7 @@ clipboard-image-config-options	clipboard-image.txt	/*clipboard-image-config-opti
 clipboard-image-functions	clipboard-image.txt	/*clipboard-image-functions*
 clipboard-image-requirement	clipboard-image.txt	/*clipboard-image-requirement*
 clipboard-image-usage	clipboard-image.txt	/*clipboard-image-usage*
-clipboard-image.get_config()	clipboard-image.txt	/*clipboard-image.get_config()*
+clipboard-image.config.get_config()	clipboard-image.txt	/*clipboard-image.config.get_config()*
 clipboard-image.paste.paste_img()	clipboard-image.txt	/*clipboard-image.paste.paste_img()*
 clipboard-image.setup()	clipboard-image.txt	/*clipboard-image.setup()*
 clipboard-image.txt	clipboard-image.txt	/*clipboard-image.txt*

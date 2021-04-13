@@ -38,11 +38,11 @@ Lua Functions~                                      *clipboard-image-functions*
     See |clipboard-image-config| for more info about the config's options.
 
 
-`clipboard-image.get_config()`                   *clipboard-image.get_config()*
+`clipboard-image.config.get_config()`     *clipboard-image.config.get_config()*
     This function return the value of this plugin's current config.
 
     If you want to print the value of this function, you can use this command: 
-    `:lua print(vim.inspect(require'clipboard-image'.get_config()))`
+    `:lua print(vim.inspect(require'clipboard-image'.config.get_config()))`
 
 `clipboard-image.paste.paste_img()`         *clipboard-image.paste.paste_img()*
 
@@ -52,6 +52,11 @@ Lua Functions~                                      *clipboard-image-functions*
 
 ===============================================================================
 CONFIGURATION                                          *clipboard-image-config*
+
+Config can be different for different filetype. The `default` table is for all
+filetype. For specifiec filetype, you can create a new table with its name is
+the same as the filetype's name. To know the filetype's name you can use
+`:lua print(vim.bo.filetype)` . See also |clipboard-image-config-example|.
 
 Options~                                       *clipboard-image-config-options*
 
@@ -92,6 +97,8 @@ img_affix                                    *clipboard-image-config-img_affix*
 
 Example~                                       *clipboard-image-config-example*
 
+See also |clipboard-image-config|
+
 For example, I use 11ty to generate a static site from my markdown. I want to
 save my image on 'src/assets/img' And instead of based on date, I want my
 image's name to be image1, image2, etc. But I want the pasted text to be
@@ -100,21 +107,25 @@ like this:
 
 >
   require'clipboard-image'.setup {
-    img_dir = 'src/assets/img',
-    img_dir_txt = '/assets/img',
-    img_name = function ()
-      local img_dir = require'clipboard-image'.get_config().img_dir()
-      local index = 1
-      for output in io.popen('ls '..img_dir):lines() do
-	if output == 'image'..index..'.png' then
-	  index = index + 1
-	else
-	  break
+    default = {
+      img_name = function ()
+	local img_dir = require'clipboard-image.config'.get_config().img_dir()
+	local index = 1
+	for output in io.popen('ls '..img_dir):lines() do
+	  if output == 'image'..index..'.png' then
+	    index = index + 1
+	  else
+	    break
+	  end
 	end
-      end
-      return 'image'..index
-    end,
-    affix = '![](%s)',
+	return 'image'..index
+      end,
+    },
+    markdown = {
+      img_dir = 'src/assets/img',
+      img_dir_txt = '/assets/img',
+      affix = '![](%s)',
+    },
   }
 <
 
