@@ -1,6 +1,6 @@
 local M = {}
 
-local config = {
+M.config = {
   default = {
     img_dir = 'img',
     img_dir_txt = 'img',
@@ -13,11 +13,11 @@ local config = {
 }
 
 M.merge_config = function (old_opts, new_opts)
-  return vim.tbl_extend('force', old_opts, new_opts or {})
+  return vim.tbl_deep_extend('force', old_opts, new_opts or {})
 end
 
 M.get_config = function ()
-  return config
+  return M.config
 end
 
 return M
