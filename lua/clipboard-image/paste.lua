@@ -1,6 +1,7 @@
 local M = {}
 local cmd = vim.cmd
 local fn = vim.fn
+local conf_module = require'clipboard-image.config'
 
 -- Check OS and display server
 -- https://vi.stackexchange.com/a/2577/33116
@@ -75,11 +76,19 @@ end
 
 M.paste_img = function ()
   -- Check wether clipboard content is image or not
-  if is_clipboard_img(get_clip_content(cmd_check)) ~= true then
+  local content = get_clip_content(cmd_check)
+  if is_clipboard_img(content) ~= true then
     print('There is no image data in clipboard')
   else
-    -- Load config
-    local conf_toload = require'clipboard-image'.get_config()
+    -- Load config [[
+    local conf_toload = conf_module.get_config()
+
+    -- Merge default config with current filetype config
+    local filetype = vim.bo.filetype
+    local def_conf, ft_conf = conf_toload.default, conf_toload[filetype]
+    conf_toload = conf_module.merge_config(def_conf, ft_conf)
+
+    -- Assign conf_toload's value to conf table
     local conf = {}
     for key, value in pairs(conf_toload) do
       -- If config is a function than load it first
@@ -89,6 +98,7 @@ M.paste_img = function ()
         conf[key] = value
       end
     end
+    -- ]]
 
     -- Create img_dir if it doesn't exist
     create_dir(conf.img_dir)
