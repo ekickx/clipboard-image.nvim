@@ -31,14 +31,21 @@ use 'ekickx/clipboard-image.nvim'
 
 After the plugin installed, you can already use it without configuring it.
 
+Config can be different for different filetype. The `default` table is for all filetype. For specifiec filetype, you can create a new table with its name is the same as the filetype's name. To know the filetype's name you can use `:lua print(vim.bo.filetype)`.
+
 The default config is like this:
 
 ```lua
 require'clipboard-image'.setup {
-  img_dir = 'img',
-  img_dir_txt = 'img',
-  img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-  affix = '%s'
+  default = {
+    img_dir = 'img',
+    img_dir_txt = 'img',
+    img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
+    affix = '%s'
+  },
+  markdown = {
+    affix = '![](%s)'
+  },
 }
 ```
 
@@ -48,21 +55,25 @@ For example, I use [11ty](https://www.11ty.dev/) to generate a static site from 
 
 ```lua
 require'clipboard-image'.setup {
-  img_dir = 'src/assets/img',
-  img_dir_txt = '/assets/img',
-  img_name = function ()
-    local img_dir = require'clipboard-image'.get_config().img_dir()
-    local index = 1
-    for output in io.popen('ls '..img_dir):lines() do
-      if output == 'image'..index..'.png' then
-        index = index + 1
-      else
-        break
+  default = {
+    img_name = function ()
+      local img_dir = require'clipboard-image.config'.get_config().img_dir()
+      local index = 1
+      for output in io.popen('ls '..img_dir):lines() do
+        if output == 'image'..index..'.png' then
+          index = index + 1
+        else
+          break
+        end
       end
-    end
-    return 'image'..index
-  end,
-  affix = '![](%s)',
+      return 'image'..index
+    end,
+  },
+  markdown = {
+    img_dir = 'src/assets/img',
+    img_dir_txt = '/assets/img',
+    affix = '![](%s)',
+  },
 }
 ```
 
