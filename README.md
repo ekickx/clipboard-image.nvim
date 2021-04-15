@@ -25,6 +25,15 @@ use 'ekickx/clipboard-image.nvim'
 
 - `:PasteImg` or `:lua require'clipboard-image.paste'.paste_img()`
 
+    Paste your clipboard image with this function. This function can also receive optional argument like this:
+    ```
+    :lua require'clipboard-image.paste'.paste_img {
+      img_dir = 'src/assets/img'
+    }
+    ```
+
+    But unlike the function, the command `:PasteImg` doesn't accept argument.
+
 # Config
 
 ## Default config

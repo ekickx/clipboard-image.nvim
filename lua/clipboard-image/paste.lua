@@ -74,7 +74,7 @@ local img_path = function (dir, img, istxt)
   end
 end
 
-M.paste_img = function ()
+M.paste_img = function (opts)
   -- Check wether clipboard content is image or not
   local content = get_clip_content(cmd_check)
   if is_clipboard_img(content) ~= true then
@@ -87,6 +87,9 @@ M.paste_img = function ()
     local filetype = vim.bo.filetype
     local def_conf, ft_conf = conf_toload.default, conf_toload[filetype]
     conf_toload = conf_module.merge_config(def_conf, ft_conf)
+
+    -- Merge conf_toload with options-on-paste
+    conf_toload = conf_module.merge_config(conf_toload, opts)
 
     -- Assign conf_toload's value to conf table
     local conf = {}

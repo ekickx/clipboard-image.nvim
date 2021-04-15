@@ -46,9 +46,16 @@ Lua Functions~                                      *clipboard-image-functions*
 
 `clipboard-image.paste.paste_img()`         *clipboard-image.paste.paste_img()*
 
-    Paste your clipboard image with this function.
+    Paste your clipboard image with this function. This function can also
+    receive optional argument like this (see |clipboard-image-config-options|):
+    ```
+    :lua require'clipboard-image.paste'.paste_img {
+      img_dir = 'src/assets/img'
+    }
+    ```
 
-    The command |:PasteImage| actually runs this function.
+    The command |:PasteImage| actually runs this function. But unlike the
+    function, the command doesn't accept argument.
 
 ===============================================================================
 CONFIGURATION                                          *clipboard-image-config*
