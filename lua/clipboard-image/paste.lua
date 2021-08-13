@@ -112,7 +112,7 @@ M.paste_img = function (opts)
     -- Insert text
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
     local pasted_txt = string.format(conf.affix, path_txt)
-    cmd("normal a"..pasted_txt)
+    vim.fn.setline('.', vim.fn.getline('.') .. ' ' .. pasted_txt)
   end
 end
 
