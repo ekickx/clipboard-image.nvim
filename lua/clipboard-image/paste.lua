@@ -22,6 +22,9 @@ if get_os() == 'Linux' then
     cmd_check = 'wl-paste --list-types'
     cmd_paste = 'wl-paste --no-newline --type image/png > %s'
   end
+elseif get_os() == 'Darwin' then
+  cmd_check = 'pngpaste -b 2>&1'
+  cmd_paste = 'pngpaste %s'
 elseif get_os() == 'Windows' then
   cmd_check = 'Get-Clipboard -Format Image'
   cmd_paste = '$content = '..cmd_check..';$content.Save(\'%s\', \'png\')'
@@ -44,6 +47,8 @@ end
 -- Function to check wether clipboard content is image or not
 local is_clipboard_img = function (content)
   if get_os() == 'Linux' and vim.tbl_contains(content, 'image/png') then
+    return true
+  elseif get_os() == 'Darwin' and string.sub(content[1], 1, 9) == 'iVBORw0KG' then -- Magic png number in base64
     return true
   elseif get_os() == 'Windows' and content ~= nil then
     return true
@@ -106,7 +111,7 @@ M.paste_img = function (opts)
     -- Create img_dir if it doesn't exist
     create_dir(conf.img_dir)
 
-    -- Paste image to it's path
+    -- Paste image to its path
     paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text

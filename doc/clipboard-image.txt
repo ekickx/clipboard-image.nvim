@@ -15,8 +15,8 @@ REQUIREMENTS                                      *clipboard-image-requirement*
 
 Clipboard-image only works on Neovim version that support lua.
 
-For linux user you also need xclip if you are on X11 or wl-clipboard if you are
-on wayland.
+For linux you also need xclip if you are on X11 or wl-clipboard if you are
+on wayland. Mac OS users need to install pngpaste.
 
 ===============================================================================
 USAGE                                                   *clipboard-image-usage*
@@ -39,7 +39,7 @@ Lua Functions~                                      *clipboard-image-functions*
 
 
 `clipboard-image.config.get_config()`     *clipboard-image.config.get_config()*
-    This function return the value of this plugin's current config.
+    This function returns the value of this plugin's current config.
 
     If you want to print the value of this function, you can use this command: 
     `:lua print(vim.inspect(require'clipboard-image'.config.get_config()))`
@@ -47,7 +47,7 @@ Lua Functions~                                      *clipboard-image-functions*
 `clipboard-image.paste.paste_img()`         *clipboard-image.paste.paste_img()*
 
     Paste your clipboard image with this function. This function can also
-    receive optional argument like this (see |clipboard-image-config-options|):
+    receive optional arguments like this (see |clipboard-image-config-options|):
     ```
     :lua require'clipboard-image.paste'.paste_img {
       img_dir = 'src/assets/img'
