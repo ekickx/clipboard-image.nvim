@@ -1,11 +1,13 @@
 # Requirement
 
-This plugin currently only supports Windows and Linux.
+This plugin currently only supports Windows, Linux and Mac OS.
 
 On Linux, you will need:
 
 - `xclip` for x11
 - `wl-clipboard` for wayland
+
+On Mac OS you will need [pngpaste](https://github.com/jcsalterego/pngpaste).
 
 # Install
 
