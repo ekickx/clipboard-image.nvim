@@ -115,9 +115,12 @@ M.paste_img = function (opts)
     paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text
+    local current_line, line_col = vim.fn.getline('.'), vim.fn.getcurpos()[3]
+    local pre_txt = current_line:sub(1, line_col)
+    local post_txt = current_line:sub(line_col+1, -1)
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
-    local pasted_txt = string.format(conf.affix, path_txt)
-    vim.fn.setline('.', vim.fn.getline('.') ..  pasted_txt)
+    local pasted_txt = pre_txt .. string.format(conf.affix, path_txt) .. post_txt
+    vim.fn.setline('.', pasted_txt)
   end
 end
 
