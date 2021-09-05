@@ -1,91 +1,79 @@
-# Requirement
+<div align="center">
 
-This plugin currently only supports Windows, Linux and Mac OS.
+## Clipboard Image 📋🖼️
 
-On Linux, you will need:
+![](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
+![](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
+![](https://img.shields.io/badge/MacOS-000000?style=flat-square&logo=apple&logoColor=white)
+</br><a href="/LICENSE.md"> ![License](https://img.shields.io/badge/License-MIT-brightgreen?style=flat-square) </a>
 
-- `xclip` for x11
-- `wl-clipboard` for wayland
+[Installation](#install)
+•
+[Usage & Demo](#usage)
+•
+[Config](#config)
+</div>
 
-On Mac OS you will need [pngpaste](https://github.com/jcsalterego/pngpaste).
+---
 
-# Install
+### Install
+> ❗ Requirement: **`xclip`** (X11), **`wl-clipboard`** (Wayland), **`pngpaste`** (MacOS)
+> 
+> ℹ️ On Linux, do `echo $XDG_SESSION_TYPE` to check what display server you're on
 
-You can install it using [vim-plug](https://github.com/junegunn/vim-plug)
+|Plugin manager|Script|
+|---|---|
+|[vim-plug](https://github.com/junegunn/vim-plug)|`Plug 'ekickx/clipboard-image.nvim'`|
+|[packer.nvim](https://github.com/wbthomason/packer.nvim)|`use 'ekickx/clipboard-image.nvim'`|
 
-```vim
-Plug 'ekickx/clipboard-image.nvim'
-```
+### Usage
+This is the basic usage. If you want to see more you can read [API](/API.md)
 
-or [packer.nvim](https://github.com/wbthomason/packer.nvim)
+|Command|Demo|
+|---|---|
+|`PasteImg`|<kbd>![](../assets/demo/paste_img.gif)</kbd>|
 
-```lua
-use 'ekickx/clipboard-image.nvim'
-```
-
-# Use
-
-- `:PasteImg` or `:lua require'clipboard-image.paste'.paste_img()`
-
-    Paste your clipboard image with this function. This function can also receive optional argument like this:
-    ```
-    :lua require'clipboard-image.paste'.paste_img {
-      img_dir = 'src/assets/img'
-    }
-    ```
-
-    But unlike the function, the command `:PasteImg` doesn't accept argument.
-
-# Config
-
-## Default config
-
-After the plugin installed, you can already use it without configuring it.
-
-Config can be different for different filetype. The `default` table is for all filetype. For specifiec filetype, you can create a new table with its name is the same as the filetype's name. To know the filetype's name you can use `:lua print(vim.bo.filetype)`.
-
-The default config is like this:
+### Config
+This plugin is **zero config**, means you don't need to configure anything to works. But if you want to, you can configure it like this:
 
 ```lua
 require'clipboard-image'.setup {
+  -- Default configuration for all typefile
   default = {
-    img_dir = 'img',
-    img_dir_txt = 'img',
+    img_dir = "img",
+    img_dir_txt = "img",
     img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-    affix = '%s'
+    affix = "%s"
   },
+  -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
+  -- If you're uncertain what to name your field to, you can run `:set filetype?`
+  -- Missing options from `markdown` field will be replaced by options from `default` field
   markdown = {
-    affix = '![](%s)'
-  },
+    img_dir = "src/assets/img"
+    img_dir_txt = "/assets/img"
+    affix = "![](%s)"
+  }
 }
 ```
 
-## Config example
+|Options|Default|Description|
+|---|---|---|
+|`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
+|`img_dir_txt`|`"img"`|Directory that will be inserted to buffer<br> <details>Useful if you have use case like the demo above where `img_dir` set to `"src/assets/img"` and `img_dir_txt` set to `"/assets/img"`</details>|
+|`img_name`|`function () return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
+|`affix`|`"%s"`|Affix|
 
-For example, I use [11ty](https://www.11ty.dev/) to generate a static site from my markdown. I want to save my image on `src/assets/img` And instead of based on date, I want my image's name to be `image1`, `image2`, etc. But I want the pasted text to be `/assets/img/image1` instead of `src/assets/img/image1`. So the config will be like this:
+## Tips
+`WIP`
 
-```lua
-require'clipboard-image'.setup {
-  default = {
-    img_name = function ()
-      local img_dir = require'clipboard-image.config'.get_config().img_dir()
-      local index = 1
-      for output in io.popen('ls '..img_dir):lines() do
-        if output == 'image'..index..'.png' then
-          index = index + 1
-        else
-          break
-        end
-      end
-      return 'image'..index
-    end,
-  },
-  markdown = {
-    img_dir = 'src/assets/img',
-    img_dir_txt = '/assets/img',
-    affix = '![](%s)',
-  },
-}
-```
+## Questions
+You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
 
-![](img/Peek_2021-01-20_14-59.gif)
+## Contribute
+Read the contribution guide [here](/CONTRIBUTING.md)
+
+## Credits
+Thanks to:
+- [ferrine/md-img-paste.vim](https://github.com/ferrine/md-img-paste.vim), I steal some code from it
+- [elianiva](https://github.com/elianiva) for giving me feedback on Vim Indonesia (Telegram group)
+- all neovim lua plugin creators and its contributors, I get some inspiration from reading their code
