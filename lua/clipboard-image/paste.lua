@@ -79,6 +79,39 @@ local img_path = function (dir, img, istxt)
   end
 end
 
+M.inset_txt = function(affix, path_txt)
+  local curpos = vim.fn.getcurpos()
+  local line_num, line_col = curpos[2], curpos[3]
+  local indent = string.rep(" ", line_col)
+  local pasted_txt = string.format(affix, path_txt)
+
+  -- Converted to table so it can handle multiline string
+  local lines = {}
+  for line in pasted_txt:gmatch("[^\r\n]+") do
+    table.insert(lines, line)
+  end
+
+  for line_index, line in pairs(lines) do
+    local current_line_num = line_num + line_index-1
+    local current_line = vim.fn.getline(current_line_num)
+    -- Remove extra space when current line is blank
+    if current_line == "" then
+      indent = indent:sub(1, -2)
+    end
+
+    local pre_txt = current_line:sub(1, line_col)
+    local post_txt = current_line:sub(line_col+1, -1)
+    local inserted_txt = pre_txt .. line .. post_txt
+
+    vim.fn.setline(current_line_num, inserted_txt)
+    -- Don't create new line on the last itteration
+    if line_index ~= #lines then
+      -- Create new line so inserted_txt doesn't replace existed line
+      vim.fn.append(current_line_num, indent)
+    end
+  end
+end
+
 M.paste_img = function (opts)
   -- Check wether clipboard content is image or not
   local content = get_clip_content(cmd_check)
@@ -115,12 +148,8 @@ M.paste_img = function (opts)
     paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text
-    local current_line, line_col = vim.fn.getline('.'), vim.fn.getcurpos()[3]
-    local pre_txt = current_line:sub(1, line_col)
-    local post_txt = current_line:sub(line_col+1, -1)
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
-    local pasted_txt = pre_txt .. string.format(conf.affix, path_txt) .. post_txt
-    vim.fn.setline('.', pasted_txt)
+    M.inset_txt(conf.affix, path_txt)
   end
 end
 
