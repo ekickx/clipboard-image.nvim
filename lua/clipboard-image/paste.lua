@@ -60,6 +60,7 @@ end
 -- Function that create dir if it doesn't exist
 local create_dir = function (dir)
   -- Create img_dir if doesn't exist
+  dir = fn.expand(dir)
   if fn.isdirectory(dir) == 0 then
     fn.mkdir(dir, 'p')
   end
@@ -72,6 +73,11 @@ end
 
 -- Create image's path from dir and img_name
 local img_path = function (dir, img, istxt)
+  dir = fn.expand(dir)
+  if dir == "" or dir == nil then
+    return img..'.png'
+  end
+
   if get_os() == 'Windows' and istxt ~= 'txt'  then
     return dir..'\\'..img..'.png'
   else
