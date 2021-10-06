@@ -61,7 +61,6 @@ end
 local create_dir = function (dir)
   -- Create img_dir if doesn't exist
   dir = fn.expand(dir)
-  print(dir)
   if fn.isdirectory(dir) == 0 then
     fn.mkdir(dir, 'p')
   end
@@ -155,7 +154,6 @@ M.paste_img = function (opts)
     paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text
-    print("image_dir_txt", conf.img_dir_txt)
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
     M.inset_txt(conf.affix, path_txt)
   end
