@@ -60,6 +60,8 @@ end
 -- Function that create dir if it doesn't exist
 local create_dir = function (dir)
   -- Create img_dir if doesn't exist
+  dir = fn.expand(dir)
+  print(dir)
   if fn.isdirectory(dir) == 0 then
     fn.mkdir(dir, 'p')
   end
@@ -72,6 +74,11 @@ end
 
 -- Create image's path from dir and img_name
 local img_path = function (dir, img, istxt)
+  dir = fn.expand(dir)
+  if dir == "" or dir == nil then
+    return img..'.png'
+  end
+
   if get_os() == 'Windows' and istxt ~= 'txt'  then
     return dir..'\\'..img..'.png'
   else
@@ -148,6 +155,7 @@ M.paste_img = function (opts)
     paste_img_to(img_path(conf.img_dir, conf.img_name))
 
     -- Insert text
+    print("image_dir_txt", conf.img_dir_txt)
     local path_txt = img_path(conf.img_dir_txt, conf.img_name, 'txt')
     M.inset_txt(conf.affix, path_txt)
   end
