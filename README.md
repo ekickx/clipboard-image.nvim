@@ -64,8 +64,26 @@ require'clipboard-image'.setup {
 |`affix`|`"%s"`|Affix|
 
 ## Tips
-`WIP`
-
+### Save image name as word under cursor
+```lua
+require'clipboard-image'.setup {
+tex= {
+    img_dir = "src/assets/img",
+    img_dir_txt = "/assets/img",
+    img_name = function()
+        local cword = vim.fn.expand('<cword>')
+        vim.fn.feedkeys("diw")
+        return cword      
+        end,
+    affix = [[
+\begin{figure}
+    \includegraphics[width=0.8\textwidth]{%s}
+\end{figure}
+]],
+  }
+  }
+```
+![](./img/wordUnderCursor.gif)
 ## Questions
 You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
 
