@@ -64,7 +64,7 @@ require'clipboard-image'.setup {
 |`affix`|`"%s"`|Affix|
 
 ## Tips
-`WIP`
+Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
 
 ## Questions
 You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
