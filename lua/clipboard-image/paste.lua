@@ -118,6 +118,14 @@ M.inset_txt = function(affix, path_txt)
   end
 end
 
+M.paste_img2 = function (name)
+    local conf = {}
+    if name then
+        conf.img_name = name
+    end
+    M.paste_img(conf)
+end
+
 M.paste_img = function (opts)
   -- Check wether clipboard content is image or not
   local content = get_clip_content(cmd_check)
