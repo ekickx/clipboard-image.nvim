@@ -18,14 +18,14 @@ M.get_clip_command = function ()
     local display_server = os.getenv('XDG_SESSION_TYPE')
     if display_server == 'x11' then
       cmd_check = 'xclip -selection clipboard -o -t TARGETS'
-      cmd_paste = 'xclip -selection clipboard -t image/png -o > %s'
+      cmd_paste = 'xclip -selection clipboard -t image/png -o > \'%s\''
     elseif display_server == 'wayland' then
       cmd_check = 'wl-paste --list-types'
-      cmd_paste = 'wl-paste --no-newline --type image/png > %s'
+      cmd_paste = 'wl-paste --no-newline --type image/png > \'%s\''
     end
   elseif this_os == 'Darwin' then
     cmd_check = 'pngpaste -b 2>&1'
-    cmd_paste = 'pngpaste %s'
+    cmd_paste = 'pngpaste \'%s\''
   elseif this_os == 'Windows' then
     cmd_check = 'Get-Clipboard -Format Image'
     cmd_paste = '$content = '..cmd_check..';$content.Save(\'%s\', \'png\')'
