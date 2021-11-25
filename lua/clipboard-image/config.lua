@@ -1,6 +1,14 @@
 local M = {}
 
 M.config = {
+  pickers = {
+    default = {
+      default_picker = 'cmdline'
+    },
+    telescope_fd = {
+      finder = 'find'
+    }
+  },
   default = {
     img_dir = 'img',
     img_dir_txt = 'img',

@@ -127,4 +127,13 @@ end
 
 M.insert_text = M.insert_txt
 
+M.pick = function (filepath)
+  local conf_utils = require 'clipboard-image.config'
+  local conf = conf_utils.get_usable_config()
+  ---Strip filename from dir path and extension
+  local filename = filepath:match("^.*/(.*)%..+$")
+  filename = M.get_img_path(conf.img_dir_txt, filename, 'txt')
+  M.insert_txt(conf.affix, filename)
+end
+
 return M
