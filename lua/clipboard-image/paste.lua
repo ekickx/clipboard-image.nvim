@@ -10,7 +10,7 @@ end
 M.paste_img = function (opts)
   local content = utils.get_clip_content(cmd_check)
   if utils.is_clipboard_img(content) ~= true then
-    print('There is no image data in clipboard')
+    vim.notify('There is no image data in clipboard', vim.log.levels.ERROR)
   else
     local conf_toload = conf_utils.get_usable_config()
     conf_toload = conf_utils.merge_config(conf_toload, opts)
