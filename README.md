@@ -49,8 +49,8 @@ require'clipboard-image'.setup {
   -- If you're uncertain what to name your field to, you can run `:set filetype?`
   -- Missing options from `markdown` field will be replaced by options from `default` field
   markdown = {
-    img_dir = "src/assets/img"
-    img_dir_txt = "/assets/img"
+    img_dir = "src/assets/img",
+    img_dir_txt = "/assets/img",
     affix = "![](%s)"
   }
 }
@@ -64,7 +64,7 @@ require'clipboard-image'.setup {
 |`affix`|`"%s"`|Affix|
 
 ## Tips
-`WIP`
+Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
 
 ## Questions
 You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
