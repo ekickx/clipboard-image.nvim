@@ -59,9 +59,9 @@ require'clipboard-image'.setup {
 |Options|Default|Description|
 |---|---|---|
 |`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
-|`img_dir_txt`|`"img"`|Directory that will be inserted to buffer<br> <details>Useful if you have use case like the demo above where `img_dir` set to `"src/assets/img"` and `img_dir_txt` set to `"/assets/img"`</details>|
+|`img_dir_txt`|`"img"`|Sometimes you want directory on the **text** to be different with the **actual** dir to save your images.<br> Example: Your actual dir is `src/assets/img` but your dir on text or buffer is `/assets/img`|
 |`img_name`|`function () return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
-|`affix`|`"%s"`|Affix|
+|`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`|String that sandwiched the image's path|
 
 ## Tips
 Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
