@@ -54,7 +54,7 @@ require 'clipboard-image.init'.setup()
 ### Paste
 | Function    | Parameter                                | Return | Description |
 |-------------|------------------------------------------|--------|-------------|
-| `paste-img` | `opts?`: [`img-opts`](#config-structure) |        | Paste name  |
+| `paste-img` | `opts?`: [`img-opts`](#image-options) |        | Paste name  |
 
 ### Utils
 | Function                        | Parameter                                                                                                                                                                                                       | Return                                             | Description                                                                                                          |
