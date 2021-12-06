@@ -95,7 +95,6 @@ end
 ---@return string img_path
 M.get_img_path = function (dir, img_name, is_txt)
   local this_os = M.get_os()
-  local dir = M.resolve_dir(dir)
   local img = img_name .. '.png'
 
   ---On cwd
