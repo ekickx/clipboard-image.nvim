@@ -65,17 +65,15 @@ end
 
 
 ---Check if resolve any complicated pathings
----@param dir string or table
-M.resolve_dir = function(dir)
-  local this_os = M.get_os()
+---@param dir string|table
+---@param path_separator string
+---@return string full_path
+M.resolve_dir = function(dir, path_separator)
   if (type(dir) == "table") then
+    path_separator = path_separator or '/'
     local full_path = ""
-    for _, value in pairs(dir) do
-        if this_os == 'Windows' then
-          full_path = full_path .. "\\" .. vim.fn.expand(value)
-        else
-          full_path = full_path .. "/" .. vim.fn.expand(value)
-        end
+    for _, value in pairs(dir, path_separator) do
+      full_path = full_path .. path_separator .. vim.fn.expand(value)
     end
     return full_path
   else
