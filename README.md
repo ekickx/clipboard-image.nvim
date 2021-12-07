@@ -49,7 +49,7 @@ require'clipboard-image'.setup {
   -- If you're uncertain what to name your field to, you can run `:set filetype?`
   -- Missing options from `markdown` field will be replaced by options from `default` field
   markdown = {
-    img_dir = "src/assets/img",
+    img_dir = {"src", "assets", "img"}, -- Use table for nested dir (New feature form PR #20)
     img_dir_txt = "/assets/img",
     affix = "![](%s)"
   }
@@ -59,7 +59,7 @@ require'clipboard-image'.setup {
 |Options|Default|Description|
 |---|---|---|
 |`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
-|`img_dir_txt`|`"img"`|Sometimes you want directory on the **text** to be different with the **actual** dir to save your images.<br> Example: Your actual dir is `src/assets/img` but your dir on text or buffer is `/assets/img`|
+|`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
 |`img_name`|`function () return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
 |`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`|String that sandwiched the image's path|
 
@@ -74,6 +74,6 @@ Read the contribution guide [here](/CONTRIBUTING.md)
 
 ## Credits
 Thanks to:
-- [ferrine/md-img-paste.vim](https://github.com/ferrine/md-img-paste.vim), I steal some code from it
+- [ferrine/md-img-paste.vim](https://github.com/ferrine/md-img-paste.vim), I look some of its code 
 - [elianiva](https://github.com/elianiva) for giving me feedback on Vim Indonesia (Telegram group)
 - all neovim lua plugin creators and its contributors, I get some inspiration from reading their code

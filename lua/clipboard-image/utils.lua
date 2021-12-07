@@ -63,21 +63,38 @@ M.is_clipboard_img = function (content)
   return false
 end
 
----@param dir string
+
+---Check if resolve any complicated pathings
+---@param dir string|table
+---@param path_separator string
+---@return string full_path
+M.resolve_dir = function(dirs, path_separator)
+  if (type(dirs) == "table") then
+    path_separator = path_separator or '/'
+    local full_path = ""
+    for _, dir in pairs(dirs) do
+      full_path = full_path .. path_separator .. vim.fn.expand(dir)
+    end
+    return full_path
+  else
+    return vim.fn.expand(dirs)
+  end
+end
+
+---@param dir string or table
 M.create_dir = function (dir)
-  dir = vim.fn.expand(dir)
+  dir = M.resolve_dir(dir)
   if vim.fn.isdirectory(dir) == 0 then
     vim.fn.mkdir(dir, 'p')
   end
 end
 
----@param img_dir string
+---@param dir string or table
 ---@param img_name string
 ---@param is_txt? '"txt"'
 ---@return string img_path
 M.get_img_path = function (dir, img_name, is_txt)
   local this_os = M.get_os()
-  local dir = vim.fn.expand(dir)
   local img = img_name .. '.png'
 
   ---On cwd
@@ -86,8 +103,10 @@ M.get_img_path = function (dir, img_name, is_txt)
   end
 
   if this_os == 'Windows' and is_txt ~= 'txt' then
+    dir = M.resolve_dir(dir, '\\')
     return dir .. '\\' .. img
   end
+  dir = M.resolve_dir(dir)
   return dir .. '/' .. img
 end
 
