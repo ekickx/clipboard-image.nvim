@@ -68,16 +68,16 @@ end
 ---@param dir string|table
 ---@param path_separator string
 ---@return string full_path
-M.resolve_dir = function(dir, path_separator)
-  if (type(dir) == "table") then
+M.resolve_dir = function(dirs, path_separator)
+  if (type(dirs) == "table") then
     path_separator = path_separator or '/'
     local full_path = ""
-    for _, value in pairs(dir, path_separator) do
-      full_path = full_path .. path_separator .. vim.fn.expand(value)
+    for _, dir in pairs(dirs) do
+      full_path = full_path .. path_separator .. vim.fn.expand(dir)
     end
     return full_path
   else
-    return vim.fn.expand(dir)
+    return vim.fn.expand(dirs)
   end
 end
 
@@ -103,8 +103,10 @@ M.get_img_path = function (dir, img_name, is_txt)
   end
 
   if this_os == 'Windows' and is_txt ~= 'txt' then
+    dir = M.resolve_dir(dir, '\\')
     return dir .. '\\' .. img
   end
+  dir = M.resolve_dir(dir)
   return dir .. '/' .. img
 end
 
