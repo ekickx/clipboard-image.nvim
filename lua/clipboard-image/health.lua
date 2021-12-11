@@ -8,6 +8,7 @@ local packages = {
   wayland = { name = "wl-clipboard", binary = "wl-paste" },
   darwin = { name = "pngpaste", binary = "pngpaste" },
   windows = { name = "powershell", binary = "powershell.exe" },
+  wsl = { name = "powershell", binary = "powershell.exe" },
 }
 
 local get_platform = function()

@@ -6,7 +6,13 @@ M.get_os = function()
   if vim.fn.has "win32" == 1 then
     return "Windows"
   end
-  return tostring(io.popen("uname"):read())
+
+  local os =  tostring(io.popen("uname"):read())
+  if os == "Linux" and
+      vim.fn.readfile("/proc/version"):lower() == "microsoft" then
+    os = "Wsl"
+  end
+  return os
 end
 
 ---Get command to *check* and *paste* clipboard content
@@ -26,7 +32,7 @@ M.get_clip_command = function()
   elseif this_os == "Darwin" then
     cmd_check = "pngpaste -b 2>&1"
     cmd_paste = "pngpaste '%s'"
-  elseif this_os == "Windows" then
+  elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
     cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
