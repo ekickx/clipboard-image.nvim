@@ -21,6 +21,11 @@ M.paste_img = function (opts)
 
     utils.create_dir(conf.img_dir)
     paste_img_to(path)
+
+    if conf.img_handler ~= nil and type(conf.img_handler) == 'function' then
+        conf.img_handler(path)
+    end
+
     utils.insert_txt(conf.affix, path_txt)
   end
 end
