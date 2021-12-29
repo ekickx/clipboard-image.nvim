@@ -41,7 +41,7 @@ require'clipboard-image'.setup {
   -- Default configuration for all filetype
   default = {
     img_dir = "images",
-    img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
+    img_name = function() return os.date('%Y-%m-%d-%H-%M-%S') end,
     affix = "<\n  %s\n>" -- Multi lines affix
   },
   -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
@@ -62,8 +62,8 @@ require'clipboard-image'.setup {
 |---|---|---|
 |`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
 |`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
-|`img_name`|`function () return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
-|`img_handler`|`function ()  end`|Function that will handle image after pasted|
+|`img_name`|`function() return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
+|`img_handler`|`function(img)  end`|Function that will handle image after pasted<br>`img` is a table that contain pasted image's `name` and `path`|
 |`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`|String that sandwiched the image's path|
 
 ## Tips
