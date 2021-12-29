@@ -1,13 +1,34 @@
-*clipboard-image.txt*         for Neovim 0.5+        Last modified: 03 May 2021
+*clipboard-image*             for Neovim 0.5+        Last modified: 29 Dec 2021
 
 Author: Ghani Rafif
 Repo: <github.com/ekickx/clipboard-image.nvim>
 License: MIT
 
 ===============================================================================
-INTRODUCTION                                                  *clipboard-image*
+CONTENTS                                             *clipboard-image-contents*
+  1. Introduction                                |clipboard-image-introduction|
+  2. Requirements                                 |clipboard-image-requirement|
+  3. Usage                                              |clipboard-image-usage|
+    3.1. Commands                                    |clipboard-image-commands|
+    3.2. Lua API/Functions                          |clipboard-image-functions|
+  4. Configuration                                     |clipboard-image-config|
+    4.1. Example                               |clipboard-image-config-example|
+    4.2. Options                               |clipboard-image-config-options|
+      4.2.1. Img Dir                           |clipboard-image-config-img_dir|
+      4.2.2. Img Dir Txt                   |clipboard-image-config-img_dir_txt|
+      4.2.3. Img Name                         |clipboard-image-config-img_name|
+      4.2.4. Img Handler                   |clipboard-image-config-img_handler|
+      4.2.5. Affix                               |clipboard-image-config-affix|
+  5. Tips                                                |clipboard-image-tips|
 
-Clipboard-image is a neovim plugin to copy image from your clipboard. 
+NOTE:
+  Press CTRL-] on the highlighted words to jump to the corresponding tag. Press
+  CTRL-T to come back. See `:help tag` for more info.
+
+===============================================================================
+INTRODUCTION                                     *clipboard-image-introduction*
+
+Clipboard-image is a neovim plugin to paste image from your clipboard. 
 To configure this plugin, see |clipboard-image-config|.
 
 ===============================================================================
@@ -15,44 +36,46 @@ REQUIREMENTS                                      *clipboard-image-requirement*
 
 Clipboard-image only works on Neovim version that support lua.
 
-For linux you also need xclip if you are on X11 or wl-clipboard if you are
-on wayland. Mac OS users need to install pngpaste.
+For linux you also need `xclip` if you are on X11 or `wl-clipboard` if you are
+on wayland. Mac OS users need to install `pngpaste`.
 
 ===============================================================================
 USAGE                                                   *clipboard-image-usage*
 
-See the available commands on |clipboard-image-commands| & its Lua functions on
+See the available commands on |clipboard-image-commands| & Lua api/functions on
 |clipboard-image-functions|.
 
-Commands~                                            *clipboard-image-commands*
+                                                     *clipboard-image-commands*
+Commands~
 
 `:PasteImage`                                                     *:PasteImage*
     This is the command to paste image from your clipboard.
 
-Lua Functions~                                      *clipboard-image-functions* 
+                                                    *clipboard-image-functions* 
+Lua API/Functions~
 
-`clipboard-image.setup()`                             *clipboard-image.setup()*
+`clipboard-image.setup({config})`                     *clipboard-image.setup()*
     Setup your config. When you load this plugin, it also runs this function to
     setup the default config.
 
-    See |clipboard-image-config| for more info about the config's options.
+    See |clipboard-image-config| for more info about the config's structure.
 
 
 `clipboard-image.config.get_config()`     *clipboard-image.config.get_config()*
     This function returns the value of this plugin's current config.
 
-    If you want to print the value of this function, you can use this command: 
-    `:lua print(vim.inspect(require'clipboard-image'.config.get_config()))`
+    e.g.:
+    `:lua print(vim.inspect(require("clipboard-image.config").get_config()))`
 
-`clipboard-image.paste.paste_img()`         *clipboard-image.paste.paste_img()*
+`clipboard-image.paste.paste_img([opts])`   *clipboard-image.paste.paste_img()*
 
     Paste your clipboard image with this function. This function can also
-    receive optional arguments like this (see |clipboard-image-config-options|):
-    ```
-    :lua require'clipboard-image.paste'.paste_img {
-      img_dir = 'src/assets/img'
-    }
-    ```
+    receive optional arguments like this:
+>
+    require("clipboard-image.paste").paste_img({
+      img_dir = {"src", "assets", "img"}
+    })
+<
 
     The command |:PasteImage| actually runs this function. But unlike the
     function, the command doesn't accept argument.
@@ -60,80 +83,121 @@ Lua Functions~                                      *clipboard-image-functions*
 ===============================================================================
 CONFIGURATION                                          *clipboard-image-config*
 
-Config can be different for different filetype. The `default` table is for all
-filetype. For specifiec filetype, you can create a new table with its name is
-the same as the filetype's name. To know the filetype's name you can use
-`:lua print(vim.bo.filetype)` . See also |clipboard-image-config-example|.
-
-Options~                                       *clipboard-image-config-options*
-
-Options's value can be string or function.
-
-img_dir                                        *clipboard-image-config-img_dir*
-	Default:
+Configuration can be different for every filetype with structure like this:
 >
-	  img_dir = 'img'
+  {
+    default = {opts},
+    {filetype} = {opts}
+  }
 <
+
+The `default` table is for all filetype. For specifiec filetype, you can create
+a new table with its name is the same as the filetype's name. You can use
+`:lua print(vim.bo.filetype)` to know the name of current filetype.
+
+                                               *clipboard-image-config-example*
+Example~
+>
+  require("clipboard-image").setup({
+    -- Default configuration for all filetype
+    default = {
+      img_dir = "images",
+      img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
+      affix = "<\n  %s\n>",
+    },
+    -- Missing options from `markdown` field will be replaced by options from `default` field
+    markdown = {
+      img_dir = {"src", "assets", "img"},
+      img_dir_txt = "/assets/img",
+      img_handler = function(img)
+	local script = string.format('./image_compressor.sh "%s"', img.path)
+	os.execute(script)
+      end
+    }
+  })
+<
+
+                                               *clipboard-image-config-options*
+Options~
+
+                                               *clipboard-image-config-img_dir*
+  img_dir~
 	Dir name where the image will be pasted to.
 
-img_dir_txt                                *clipboard-image-config-img_dir_txt*
-	Default:
->
-	  img_dir_txt = 'img'
-<
-	Text of dir that will be inserted.
+	Type:~
+	  string | table | function
 
-	See also |clipboard-image-config-example|
+	Default:~
+	  "img"
+	
+	Note:
+	  If you want to create nested dir, it is better to use table since
+	  windows and unix has different path separator.
 
-img_name                                      *clipboard-image-config-img_name*
-	Default:
+                                           *clipboard-image-config-img_dir_txt*
+  img_dir_txt~
+	Dir that will be inserted into text/buffer.
+
+	Type:~
+	  string | table | function
+
+	Default:~
+	  "img"
+
+                                              *clipboard-image-config-img_name*
+  img_name~
+	Image's name.
+
+	Type:~
+	  string | function
+
+	Default:~
 >
-	  img_name = function ()
+	  function ()
 	    return os.date('%Y-%m-%d-%H-%M-%S')
 	  end
 <
-	Pasted image's name.
+	  Example result: "2021-04-13-10-04-18"
 
-img_affix                                    *clipboard-image-config-img_affix*
-	Default:
+                                           *clipboard-image-config-img_handler*
+  img_handler~
+	Function that will handle image after pasted.
+
+	Type:~
+	  function
+
+	Default:~
 >
-	  img_affix = ''
+	  function(img) end
 <
-	Image's path's affix
+	Note:
+	  `img` is a table that contain pasted image's {name} and {path}
 
+                                                 *clipboard-image-config-affix*
+  affix~
+	String that sandwiched the image's path
 
-Example~                                       *clipboard-image-config-example*
+	Type:~
+	  string | function
 
-See also |clipboard-image-config|
+	Default:~
+	  * `default`: "{img_path}"
+	  * `markdown`: "![]({img_path})"
 
-For example, I use 11ty to generate a static site from my markdown. I want to
-save my image on 'src/assets/img' And instead of based on date, I want my
-image's name to be image1, image2, etc. But I want the pasted text to be
-'/assets/img/image1' instead of 'src/assets/img/image1'. So the config will be
-like this:
-
+	Note:
+	  Affix can be multi lines, like this:
 >
-  require'clipboard-image'.setup {
-    default = {
-      img_name = function ()
-	local img_dir = require'clipboard-image.config'.get_config().img_dir()
-	local index = 1
-	for output in io.popen('ls '..img_dir):lines() do
-	  if output == 'image'..index..'.png' then
-	    index = index + 1
-	  else
-	    break
-	  end
-	end
-	return 'image'..index
-      end,
-    },
-    markdown = {
-      img_dir = 'src/assets/img',
-      img_dir_txt = '/assets/img',
-      affix = '![](%s)',
-    },
-  }
+	  -- You can use line break escape sequence
+	  affix = "<\n  %s\n>"
+
+	  -- Or lua's double square brackets
+	  affix = [[<
+	    %s
+	  >]]
 <
+
+===============================================================================
+TIPS                                                     *clipboard-image-tips*
+See & share some tips on https://github.com/ekickx/clipboard-image/discussions/15
 
 vim:tw=78:ts=8:noet:ft=help:norl:
