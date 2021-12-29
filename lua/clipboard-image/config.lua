@@ -5,7 +5,7 @@ M.config = {
     img_dir = 'img',
     img_dir_txt = 'img',
     img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-    img_handler = nil,
+    img_handler = function(img) end,
     affix = '%s'
   },
   markdown = {
@@ -35,6 +35,10 @@ M.get_usable_config = function ()
   return M.merge_config(default_config, filetype_config)
 end
 
+---Load argument if it is a function
+---Used in config.load_config
+---@param opt any
+---@return any opt
 M.load_opt = function (opt)
   if type(opt) == 'function' then
     return opt()

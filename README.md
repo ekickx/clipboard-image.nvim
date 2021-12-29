@@ -38,20 +38,22 @@ This plugin is **zero config**, means you don't need to configure anything to wo
 
 ```lua
 require'clipboard-image'.setup {
-  -- Default configuration for all typefile
+  -- Default configuration for all filetype
   default = {
-    img_dir = "img",
-    img_dir_txt = "img",
+    img_dir = "images",
     img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
-    affix = "%s"
+    affix = "<\n  %s\n>" -- Multi lines affix
   },
   -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
-  -- If you're uncertain what to name your field to, you can run `:set filetype?`
+  -- If you're uncertain what to name your field to, you can run `lua print(vim.bo.filetype)`
   -- Missing options from `markdown` field will be replaced by options from `default` field
   markdown = {
     img_dir = {"src", "assets", "img"}, -- Use table for nested dir (New feature form PR #20)
     img_dir_txt = "/assets/img",
-    affix = "![](%s)"
+    img_handler = function(img) -- New feature from PR #22
+      local script = string.format('./image_compressor.sh "%s"', img.path)
+      os.execute(script)
+    end,
   }
 }
 ```
@@ -61,6 +63,7 @@ require'clipboard-image'.setup {
 |`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
 |`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
 |`img_name`|`function () return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
+|`img_handler`|`function ()  end`|Function that will handle image after pasted|
 |`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`|String that sandwiched the image's path|
 
 ## Tips
