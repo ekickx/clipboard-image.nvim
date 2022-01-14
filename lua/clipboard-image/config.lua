@@ -8,6 +8,9 @@ M.config = {
     img_handler = function(img) end,
     affix = '%s'
   },
+  asciidoc = {
+    affix = 'image::%s[]'
+  },
   markdown = {
     affix = '![](%s)'
   },

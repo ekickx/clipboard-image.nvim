@@ -64,7 +64,7 @@ require'clipboard-image'.setup {
 |`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
 |`img_name`|`function() return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
 |`img_handler`|`function(img)  end`|Function that will handle image after pasted<br>`img` is a table that contain pasted image's `name` and `path`|
-|`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`|String that sandwiched the image's path|
+|`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`</br>`asciidoc`: `"image::%s[]"`|String that sandwiched the image's path|
 
 ## Tips
 Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
