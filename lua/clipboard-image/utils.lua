@@ -73,11 +73,11 @@ M.resolve_dir = function(dirs, path_separator)
     path_separator = path_separator or '/'
     local full_path = ""
     for _, dir in pairs(dirs) do
-      full_path = full_path .. path_separator .. vim.fn.expand(dir)
+      full_path = full_path .. vim.fn.expand(dir) .. path_separator
     end
     return full_path
   else
-    return vim.fn.expand(dirs)
+    return vim.fn.expand(dirs) .. path_separator
   end
 end
 
@@ -98,16 +98,16 @@ M.get_img_path = function (dir, img_name, is_txt)
   local img = img_name .. '.png'
 
   ---On cwd
-  if dir == "" or dir == nil then
+  if dir == '' or dir == nil then
     return img
   end
 
   if this_os == 'Windows' and is_txt ~= 'txt' then
     dir = M.resolve_dir(dir, '\\')
-    return dir .. '\\' .. img
+  else
+    dir = M.resolve_dir(dir)
   end
-  dir = M.resolve_dir(dir)
-  return dir .. '/' .. img
+  return dir .. img
 end
 
 ---Insert image's path with affix
