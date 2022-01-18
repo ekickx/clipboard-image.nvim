@@ -69,8 +69,8 @@ end
 ---@param path_separator string
 ---@return string full_path
 M.resolve_dir = function(dirs, path_separator)
+  path_separator = path_separator or '/'
   if (type(dirs) == "table") then
-    path_separator = path_separator or '/'
     local full_path = ""
     for _, dir in pairs(dirs) do
       full_path = full_path .. vim.fn.expand(dir) .. path_separator
