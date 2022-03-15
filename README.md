@@ -31,7 +31,7 @@ This is the basic usage. If you want to see more you can read [API](/API.md)
 
 |Command|Demo|
 |---|---|
-|`PasteImg`|<kbd>![](https://media.githubusercontent.com/media/ekickx/assets/main/clipboard-image.nvim/paste_img.gif)</kbd>|
+|`PasteImg`|<kbd>![](https://link.ekickx.vercel.app/clipboard-image.nvim/demo_pasteimg)</kbd>|
 
 ### Config
 This plugin is **zero config**, means you don't need to configure anything to works. But if you want to, you can configure it like this:
