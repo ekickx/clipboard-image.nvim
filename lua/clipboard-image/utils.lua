@@ -22,6 +22,9 @@ M.get_clip_command = function ()
     elseif display_server == 'wayland' then
       cmd_check = 'wl-paste --list-types'
       cmd_paste = 'wl-paste --no-newline --type image/png > \'%s\''
+    elseif display_server == 'tty' then
+      cmd_check = 'xclip -selection clipboard -o -t TARGETS'
+      cmd_paste = 'xclip -selection clipboard -t image/png -o > \'%s\''
     end
   elseif this_os == 'Darwin' then
     cmd_check = 'pngpaste -b 2>&1'
