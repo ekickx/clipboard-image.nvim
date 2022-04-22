@@ -2,42 +2,42 @@ local M = {}
 
 ---Reference https://vi.stackexchange.com/a/2577/33116
 ---@return string os_name
-M.get_os = function ()
-  if vim.fn.has('win32') == 1 then
-    return 'Windows'
+M.get_os = function()
+  if vim.fn.has "win32" == 1 then
+    return "Windows"
   end
-  return tostring(io.popen('uname'):read())
+  return tostring(io.popen("uname"):read())
 end
 
 ---Get command to *check* and *paste* clipboard content
 ---@return string cmd_check, string cmd_paste
-M.get_clip_command = function ()
-  local cmd_check, cmd_paste = '', ''
+M.get_clip_command = function()
+  local cmd_check, cmd_paste = "", ""
   local this_os = M.get_os()
-  if this_os == 'Linux' then
-    local display_server = os.getenv('XDG_SESSION_TYPE')
-    if display_server == 'x11' or display_server == 'tty' then
-      cmd_check = 'xclip -selection clipboard -o -t TARGETS'
-      cmd_paste = 'xclip -selection clipboard -t image/png -o > \'%s\''
-    elseif display_server == 'wayland' then
-      cmd_check = 'wl-paste --list-types'
-      cmd_paste = 'wl-paste --no-newline --type image/png > \'%s\''
+  if this_os == "Linux" then
+    local display_server = os.getenv "XDG_SESSION_TYPE"
+    if display_server == "x11" or display_server == "tty" then
+      cmd_check = "xclip -selection clipboard -o -t TARGETS"
+      cmd_paste = "xclip -selection clipboard -t image/png -o > '%s'"
+    elseif display_server == "wayland" then
+      cmd_check = "wl-paste --list-types"
+      cmd_paste = "wl-paste --no-newline --type image/png > '%s'"
     end
-  elseif this_os == 'Darwin' then
-    cmd_check = 'pngpaste -b 2>&1'
-    cmd_paste = 'pngpaste \'%s\''
-  elseif this_os == 'Windows' then
-    cmd_check = 'Get-Clipboard -Format Image'
-    cmd_paste = '$content = '..cmd_check..';$content.Save(\'%s\', \'png\')'
-    cmd_check = 'powershell.exe \"'..cmd_check..'\"'
-    cmd_paste = 'powershell.exe \"'..cmd_paste..'\"'
+  elseif this_os == "Darwin" then
+    cmd_check = "pngpaste -b 2>&1"
+    cmd_paste = "pngpaste '%s'"
+  elseif this_os == "Windows" then
+    cmd_check = "Get-Clipboard -Format Image"
+    cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
+    cmd_check = 'powershell.exe "' .. cmd_check .. '"'
+    cmd_paste = 'powershell.exe "' .. cmd_paste .. '"'
   end
   return cmd_check, cmd_paste
 end
 
 ---Will be used in utils.is_clipboard_img to check if image data exist
 ---@param command string #command to check clip_content
-M.get_clip_content = function (command)
+M.get_clip_content = function(command)
   command = io.popen(command)
   local outputs = {}
 
@@ -51,26 +51,25 @@ end
 ---Check if clipboard contain image data
 ---See also: [Data URI scheme](https://en.wikipedia.org/wiki/Data_URI_scheme)
 ---@param content string #clipboard content
-M.is_clipboard_img = function (content)
+M.is_clipboard_img = function(content)
   local this_os = M.get_os()
-  if this_os == 'Linux' and vim.tbl_contains(content, 'image/png') then
+  if this_os == "Linux" and vim.tbl_contains(content, "image/png") then
     return true
-  elseif this_os == 'Darwin' and string.sub(content[1], 1, 9) == 'iVBORw0KG' then -- Magic png number in base64
+  elseif this_os == "Darwin" and string.sub(content[1], 1, 9) == "iVBORw0KG" then -- Magic png number in base64
     return true
-  elseif this_os == 'Windows' and content ~= nil then
+  elseif this_os == "Windows" and content ~= nil then
     return true
   end
   return false
 end
-
 
 ---Check if resolve any complicated pathings
 ---@param dir string|table
 ---@param path_separator string
 ---@return string full_path
 M.resolve_dir = function(dirs, path_separator)
-  path_separator = path_separator or '/'
-  if (type(dirs) == "table") then
+  path_separator = path_separator or "/"
+  if type(dirs) == "table" then
     local full_path = ""
     for _, dir in pairs(dirs) do
       full_path = full_path .. vim.fn.expand(dir) .. path_separator
@@ -82,10 +81,10 @@ M.resolve_dir = function(dirs, path_separator)
 end
 
 ---@param dir string or table
-M.create_dir = function (dir)
+M.create_dir = function(dir)
   dir = M.resolve_dir(dir)
   if vim.fn.isdirectory(dir) == 0 then
-    vim.fn.mkdir(dir, 'p')
+    vim.fn.mkdir(dir, "p")
   end
 end
 
@@ -93,17 +92,17 @@ end
 ---@param img_name string
 ---@param is_txt? '"txt"'
 ---@return string img_path
-M.get_img_path = function (dir, img_name, is_txt)
+M.get_img_path = function(dir, img_name, is_txt)
   local this_os = M.get_os()
-  local img = img_name .. '.png'
+  local img = img_name .. ".png"
 
   ---On cwd
-  if dir == '' or dir == nil then
+  if dir == "" or dir == nil then
     return img
   end
 
-  if this_os == 'Windows' and is_txt ~= 'txt' then
-    dir = M.resolve_dir(dir, '\\')
+  if this_os == "Windows" and is_txt ~= "txt" then
+    dir = M.resolve_dir(dir, "\\")
   else
     dir = M.resolve_dir(dir)
   end
@@ -115,25 +114,25 @@ end
 M.insert_txt = function(affix, path_txt)
   local curpos = vim.fn.getcurpos()
   local line_num, line_col = curpos[2], curpos[3]
-  local indent = string.rep(' ', line_col)
+  local indent = string.rep(" ", line_col)
   local txt_topaste = string.format(affix, path_txt)
 
   ---Convert txt_topaste to lines table so it can handle multiline string
   local lines = {}
-  for line in txt_topaste:gmatch('[^\r\n]+') do
+  for line in txt_topaste:gmatch "[^\r\n]+" do
     table.insert(lines, line)
   end
 
   for line_index, line in pairs(lines) do
-    local current_line_num = line_num + line_index-1
+    local current_line_num = line_num + line_index - 1
     local current_line = vim.fn.getline(current_line_num)
     ---Since there's no collumn 0, remove extra space when current line is blank
-    if current_line == '' then
+    if current_line == "" then
       indent = indent:sub(1, -2)
     end
 
     local pre_txt = current_line:sub(1, line_col)
-    local post_txt = current_line:sub(line_col+1, -1)
+    local post_txt = current_line:sub(line_col + 1, -1)
     local inserted_txt = pre_txt .. line .. post_txt
 
     vim.fn.setline(current_line_num, inserted_txt)
