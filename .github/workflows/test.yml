@@ -1,0 +1,22 @@
+name: Test
+on: push
+
+jobs:
+  unit_test:
+    name: Test plugin
+    strategy:
+      matrix:
+        include:
+          - os: macos-11
+            name: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      # Install neovim
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+
+      - run: make ${{ matrix.name }}-prepare
+      - run: make test

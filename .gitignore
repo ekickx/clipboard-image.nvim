@@ -1,1 +1,4 @@
 doc/tags
+img/
+test/expected.png
+vendor/
