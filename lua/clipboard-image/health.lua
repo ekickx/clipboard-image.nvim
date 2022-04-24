@@ -10,7 +10,7 @@ local packages = {
 }
 
 local get_platform = function()
-  this_os = utils.get_os()
+  local this_os = utils.get_os()
   if this_os == "Linux" then
     local display_server = os.getenv "XDG_SESSION_TYPE"
     return display_server
