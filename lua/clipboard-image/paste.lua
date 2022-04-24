@@ -1,6 +1,7 @@
 local M = {}
 local conf_utils = require "clipboard-image.config"
 local utils = require "clipboard-image.utils"
+local check_dependencies = require("clipboard-image.health").check_current_deps
 local cmd_check, cmd_paste = utils.get_clip_command()
 
 local paste_img_to = function(path)
@@ -8,6 +9,12 @@ local paste_img_to = function(path)
 end
 
 M.paste_img = function(opts)
+  local is_deps_exist, deps_msg = check_dependencies()
+  if not is_deps_exist then
+    vim.notify(deps_msg, vim.log.levels.ERROR)
+    return false
+  end
+
   local content = utils.get_clip_content(cmd_check)
   if utils.is_clipboard_img(content) ~= true then
     vim.notify("There is no image data in clipboard", vim.log.levels.ERROR)
