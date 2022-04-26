@@ -26,27 +26,31 @@ local check_package_installed = function(package)
   return false, name .. " is not installed"
 end
 
----Check external dependencies on current platform (x11, wayland, etc)
+---Check external dependency on current platform
 ---@return boolean is_installed
 ---@return string msg message wether dependencies are installed or not
-M.check_current_deps = function()
+M.check_current_dep = function()
   local platform = get_platform()
   local package = packages[platform]
-  local is_installed, msg = check_package_installed(package)
 
+  if package == nil then
+    return false, "platform is not supported"
+  end
+
+  local is_installed, msg = check_package_installed(package)
   return is_installed, msg
 end
 
 ---Used for `:checkhealth`
 ---See also `:h health-lua`
 M.check = function()
-  local is_deps_exist, deps_msg = M.check_current_deps(package)
+  local is_dep_exist, report_msg = M.check_current_dep()
 
   health.report_start "Checking dependencies"
-  if is_deps_exist then
-    health.report_ok(deps_msg)
+  if is_dep_exist then
+    health.report_ok(report_msg)
   else
-    health.report_error(deps_msg)
+    health.report_error(report_msg)
   end
 end
 
