@@ -9,7 +9,7 @@ local paste_img_to = function(path)
 end
 
 M.paste_img = function(opts)
-  local is_dep_exist, deps_msg = check_dependencies()
+  local is_dep_exist, deps_msg = check_dependency()
   if not is_dep_exist then
     vim.notify(deps_msg, vim.log.levels.ERROR)
     return false
