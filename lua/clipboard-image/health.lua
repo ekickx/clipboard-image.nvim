@@ -7,6 +7,7 @@ local packages = {
   tty = { name = "xclip", binary = "xclip" },
   wayland = { name = "wl-clipboard", binary = "wl-paste" },
   darwin = { name = "pngpaste", binary = "pngpaste" },
+  windows = { name = "powershell", binary = "powershell.exe" },
 }
 
 local get_platform = function()
