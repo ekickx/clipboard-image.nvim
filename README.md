@@ -36,6 +36,9 @@ This is the basic usage. If you want to see more you can read [API](/API.md)
 ### Config
 This plugin is **zero config**, means you don't need to configure anything to works. But if you want to, you can configure it like this:
 
+<details>
+  <summary><strong>Example</strong></summary></br>
+
 ```lua
 require'clipboard-image'.setup {
   -- Default configuration for all filetype
@@ -57,25 +60,45 @@ require'clipboard-image'.setup {
   }
 }
 ```
+  
+</details>
+  
+<details open>
+  <summary><strong>Structure</strong></summary></br>
+  
+  See also [API](https://github.com/ekickx/clipboard-image.nvim/blob/doc_api/API.md#config-structure)
+  
+```lua
+{
+  default = {
+    <options>
+  },
+  <filetype> = {
+    <options>
+  },
+}
+```
 
 |Options|Default|Description|
 |---|---|---|
 |`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
 |`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
 |`img_name`|`function() return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
-|`img_handler`|`function(img)  end`|Function that will handle image after pasted<br>`img` is a table that contain pasted image's `name` and `path`|
+|`img_handler`|`function(img)  end`|Function that will handle image after pasted.<br>`img` is a table that contain pasted image's `name` and `path`|
 |`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`</br>`asciidoc`: `"image::%s[]"`|String that sandwiched the image's path|
 
-## Tips
+</details>
+
+### Tips
 Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
 
-## Questions
+### Questions
 You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
 
-## Contribute
+### Contribute
 Read the contribution guide [here](/CONTRIBUTING.md)
 
-## Credits
+### Credits
 Thanks to:
 - [ferrine/md-img-paste.vim](https://github.com/ferrine/md-img-paste.vim), I look some of its code 
 - [elianiva](https://github.com/elianiva) for giving me feedback on Vim Indonesia (Telegram group)
