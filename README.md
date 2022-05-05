@@ -89,16 +89,16 @@ require'clipboard-image'.setup {
 
 </details>
 
-### Tips
+## Tips
 Share your tips [here](https://github.com/ekickx/clipboard-image.nvim/discussions/15)
 
-### Questions
+## Questions
 You can ask your questions on [discussions](https://github.com/ekickx/clipboard-image.nvim/discussions)
 
-### Contribute
+## Contribute
 Read the contribution guide [here](/CONTRIBUTING.md)
 
-### Credits
+## Credits
 Thanks to:
 - [ferrine/md-img-paste.vim](https://github.com/ferrine/md-img-paste.vim), I look some of its code 
 - [elianiva](https://github.com/elianiva) for giving me feedback on Vim Indonesia (Telegram group)
