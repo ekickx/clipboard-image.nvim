@@ -1,4 +1,15 @@
-> WIP
+> NOTE: You can ommit function's parentheses if the argument is only a `string` or `table`
+
+```lua
+local clip_img = require('clipboard-image')
+clip_img.setup({img_dir = 'assets'})
+
+-- Is the same as
+local clip_img = require 'clipboard-image'
+clip_img.setup {img_dir = 'assets'}
+```
+
+<hr>
 
 How to call these function:
 
@@ -11,6 +22,7 @@ Example:
 -- Paste image
 require 'clipboard-image.paste'.paste-img()
 ```
+
 ## Modules
 
 ### Init
