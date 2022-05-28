@@ -9,7 +9,7 @@ M.get_os = function()
 
   local this_os =  tostring(io.popen("uname"):read())
   if this_os == "Linux" and
-      vim.fn.readfile("/proc/version")[1]:lower() == "microsoft" then
+      vim.fn.readfile("/proc/version")[1]:lower():match "microsoft" then
     this_os = "Wsl"
   end
   return this_os
@@ -70,7 +70,7 @@ M.is_clipboard_img = function(content)
 end
 
 ---Check if resolve any complicated pathings
----@param dir string|table
+---@param dirs string|table
 ---@param path_separator string
 ---@return string full_path
 M.resolve_dir = function(dirs, path_separator)
