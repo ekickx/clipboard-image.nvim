@@ -63,7 +63,7 @@ M.is_clipboard_img = function(content)
     return true
   elseif this_os == "Darwin" and string.sub(content[1], 1, 9) == "iVBORw0KG" then -- Magic png number in base64
     return true
-  elseif this_os == "Windows" and content ~= nil then
+  elseif this_os == "Windows" or this_os == "Wsl" and content ~= nil then
     return true
   end
   return false
