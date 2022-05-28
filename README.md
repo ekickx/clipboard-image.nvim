@@ -4,6 +4,7 @@
 
 ![](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
 ![](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
+![](https://img.shields.io/badge/WSL-55a9dd?style=flat-square&logo=windows-terminal&logoColor=black)
 ![](https://img.shields.io/badge/MacOS-000000?style=flat-square&logo=apple&logoColor=white)
 </br><a href="/LICENSE.md"> ![License](https://img.shields.io/badge/License-MIT-brightgreen?style=flat-square) </a>
 

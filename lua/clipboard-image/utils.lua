@@ -6,7 +6,13 @@ M.get_os = function()
   if vim.fn.has "win32" == 1 then
     return "Windows"
   end
-  return tostring(io.popen("uname"):read())
+
+  local this_os =  tostring(io.popen("uname"):read())
+  if this_os == "Linux" and
+      vim.fn.readfile("/proc/version")[1]:lower():match "microsoft" then
+    this_os = "Wsl"
+  end
+  return this_os
 end
 
 ---Get command to *check* and *paste* clipboard content
@@ -26,7 +32,7 @@ M.get_clip_command = function()
   elseif this_os == "Darwin" then
     cmd_check = "pngpaste -b 2>&1"
     cmd_paste = "pngpaste '%s'"
-  elseif this_os == "Windows" then
+  elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
     cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
@@ -57,14 +63,14 @@ M.is_clipboard_img = function(content)
     return true
   elseif this_os == "Darwin" and string.sub(content[1], 1, 9) == "iVBORw0KG" then -- Magic png number in base64
     return true
-  elseif this_os == "Windows" and content ~= nil then
+  elseif this_os == "Windows" or this_os == "Wsl" and content ~= nil then
     return true
   end
   return false
 end
 
 ---Check if resolve any complicated pathings
----@param dir string|table
+---@param dirs string|table
 ---@param path_separator string
 ---@return string full_path
 M.resolve_dir = function(dirs, path_separator)
