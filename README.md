@@ -30,6 +30,9 @@
 ### Usage
 This is the basic usage. If you want to see more you can read [API](/API.md)
 
+> you can input this command `PastImg` in markdown to copy image.
+> By default, it will create a new img folder in the current directory
+
 |Command|Demo|
 |---|---|
 |`PasteImg`|<kbd>![](https://link.ekickx.vercel.app/clipboard-image.nvim/demo_pasteimg)</kbd>|
