@@ -20,7 +20,7 @@
 ### Install
 > ❗ Requirement: **`xclip`** (X11), **`wl-clipboard`** (Wayland), **`pngpaste`** (MacOS)
 > 
-> ℹ️ On Linux, do `echo $XDG_SESSION_TYPE` to check what display server you're on
+> ℹ️ Run `:checkhealth clipboard-image` to check a missing dependency
 
 |Plugin manager|Script|
 |---|---|
