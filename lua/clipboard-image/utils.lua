@@ -17,28 +17,44 @@ end
 
 ---Get command to *check* and *paste* clipboard content
 ---@return string cmd_check, string cmd_paste
-M.get_clip_command = function()
-  local cmd_check, cmd_paste = "", ""
+M.get_clip_command = function(img_format)
+  local cmd_check
+  local paste_img_to
   local this_os = M.get_os()
   if this_os == "Linux" then
     local display_server = os.getenv "XDG_SESSION_TYPE"
     if display_server == "x11" or display_server == "tty" then
       cmd_check = "xclip -selection clipboard -o -t TARGETS"
-      cmd_paste = "xclip -selection clipboard -t image/png -o > '%s'"
+      paste_img_to = function(path, img_format)
+        cmd = "xclip -selection clipboard -t image/%s -o > '%s'"
+        os.execute(string.format(cmd, img_format, path))
+      end
     elseif display_server == "wayland" then
       cmd_check = "wl-paste --list-types"
-      cmd_paste = "wl-paste --no-newline --type image/png > '%s'"
+      paste_img_to = function(path, img_format)
+        cmd = "wl-paste --no-newline --type image/%s > '%s'"
+        os.execute(string.format(cmd, img_format, path))
+      end
     end
   elseif this_os == "Darwin" then
     cmd_check = "pngpaste -b 2>&1"
-    cmd_paste = "pngpaste '%s'"
+    paste_img_to = function(path, img_format)
+      if img_format ~= "png" then
+        vim.notify("The image format"..img_format.." is not supported in this platform.", vim.log.levels.ERROR)
+      end
+      cmd = "pngpaste '%s'"
+      os.execute(string.format(cmd, path))
+    end
   elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
-    cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
-    cmd_paste = 'powershell.exe "' .. cmd_paste .. '"'
+    paste_img_to = function(path, img_format)
+      cmd = "$content = " .. cmd_check .. ";$content.Save('%s', '%s')"
+      cmd = 'powershell.exe "' .. cmd .. '"'
+      os.execute(string.format(cmd, path, img_format))
+    end
   end
-  return cmd_check, cmd_paste
+  return cmd_check, paste_img_to
 end
 
 ---Will be used in utils.is_clipboard_img to check if image data exist
@@ -57,9 +73,9 @@ end
 ---Check if clipboard contain image data
 ---See also: [Data URI scheme](https://en.wikipedia.org/wiki/Data_URI_scheme)
 ---@param content string #clipboard content
-M.is_clipboard_img = function(content)
+M.is_clipboard_img = function(content, img_format)
   local this_os = M.get_os()
-  if this_os == "Linux" and vim.tbl_contains(content, "image/png") then
+  if this_os == "Linux" and vim.tbl_contains(content, "image/"..img_format) then
     return true
   elseif this_os == "Darwin" and string.sub(content[1], 1, 9) == "iVBORw0KG" then -- Magic png number in base64
     return true
@@ -98,9 +114,9 @@ end
 ---@param img_name string
 ---@param is_txt? '"txt"'
 ---@return string img_path
-M.get_img_path = function(dir, img_name, is_txt)
+M.get_img_path = function(dir, img_name, img_ext, is_txt)
   local this_os = M.get_os()
-  local img = img_name .. ".png"
+  local img = img_name .. img_ext
 
   ---On cwd
   if dir == "" or dir == nil then
