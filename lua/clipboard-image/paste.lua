@@ -6,7 +6,7 @@ local cmd_check, paste_img_to = utils.get_clip_command()
 
 local resize_img = function(path, img_size)
     os.execute(string.format(
-      'convert %s -quality 95 -resize "'..img_size..'>" %s',
+      'convert "%s" -quality 95 -resize "'..img_size..'>" "%s"',
       path,
       path
     ))
