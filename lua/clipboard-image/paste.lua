@@ -4,14 +4,6 @@ local utils = require "clipboard-image.utils"
 local check_dependency = require("clipboard-image.health").check_current_dep
 local cmd_check, paste_img_to = utils.get_clip_command()
 
-local resize_img = function(path, img_size)
-    os.execute(string.format(
-      'convert "%s" -quality 95 -resize "'..img_size..'>" "%s"',
-      path,
-      path
-    ))
-end
-
 M.paste_img = function(opts)
   local is_dep_exist, deps_msg = check_dependency()
   if not is_dep_exist then
@@ -33,9 +25,6 @@ M.paste_img = function(opts)
 
     utils.create_dir(conf.img_dir)
     paste_img_to(path, conf.img_format)
-    if conf.img_size ~= nil then
-      resize_img(path, conf.img_size)
-    end
     utils.insert_txt(conf.affix, path_txt)
 
     if type(conf.img_handler) == "function" then

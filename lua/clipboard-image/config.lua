@@ -10,7 +10,6 @@ M.config = {
     img_handler = function(img) end,
     affix = "%s",
     img_format = "png",
-    img_size = nil,
   },
   asciidoc = {
     affix = "image::%s[]",
@@ -73,7 +72,6 @@ M.load_config = function(config_toload)
     img_handler = config_toload.img_handler,
     img_format = img_format,
     img_ext = img_ext,
-    img_size = M.load_opt(config_toload.img_size),
   }
 end
 
