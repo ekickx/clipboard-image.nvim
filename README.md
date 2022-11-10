@@ -67,7 +67,7 @@ require'clipboard-image'.setup {
 <details open>
   <summary><strong>Structure</strong></summary></br>
   
-  See also [API](https://github.com/ekickx/clipboard-image.nvim/blob/doc_api/API.md#config-structure)
+  See also [API](/API.md#config-structure)
   
 ```lua
 {
