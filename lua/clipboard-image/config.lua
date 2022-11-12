@@ -62,7 +62,7 @@ end
 ---@return table loaded_config
 M.load_config = function(config_toload)
   local img_format = M.load_opt(config_toload.img_format)
-  img_ext = "."..img_format
+  local img_ext = "."..img_format
   if img_format == "jpg" then img_format = "jpeg" end
   return {
     affix = M.load_opt(config_toload.affix),

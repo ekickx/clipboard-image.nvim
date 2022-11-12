@@ -17,7 +17,7 @@ end
 
 ---Get command to *check* and *paste* clipboard content
 ---@return string cmd_check, string cmd_paste
-M.get_clip_command = function(img_format)
+M.get_clip_command = function()
   local cmd_check
   local paste_img_to
   local this_os = M.get_os()
@@ -26,13 +26,13 @@ M.get_clip_command = function(img_format)
     if display_server == "x11" or display_server == "tty" then
       cmd_check = "xclip -selection clipboard -o -t TARGETS"
       paste_img_to = function(path, img_format)
-        cmd = "xclip -selection clipboard -t image/%s -o > '%s'"
+        local cmd = "xclip -selection clipboard -t image/%s -o > '%s'"
         os.execute(string.format(cmd, img_format, path))
       end
     elseif display_server == "wayland" then
       cmd_check = "wl-paste --list-types"
       paste_img_to = function(path, img_format)
-        cmd = "wl-paste --no-newline --type image/%s > '%s'"
+        local cmd = "wl-paste --no-newline --type image/%s > '%s'"
         os.execute(string.format(cmd, img_format, path))
       end
     end
@@ -42,14 +42,14 @@ M.get_clip_command = function(img_format)
       if img_format ~= "png" then
         vim.notify("The image format"..img_format.." is not supported in this platform.", vim.log.levels.ERROR)
       end
-      cmd = "pngpaste '%s'"
+      local cmd = "pngpaste '%s'"
       os.execute(string.format(cmd, path))
     end
   elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
     paste_img_to = function(path, img_format)
-      cmd = "$content = " .. cmd_check .. ";$content.Save('%s', '%s')"
+      local cmd = "$content = " .. cmd_check .. ";$content.Save('%s', '%s')"
       cmd = 'powershell.exe "' .. cmd .. '"'
       os.execute(string.format(cmd, path, img_format))
     end
