@@ -1,4 +1,4 @@
-*clipboard-image*             for Neovim 0.5+        Last modified: 29 Dec 2021
+*clipboard-image*             for Neovim 0.8+        Last modified: 12 Nov 2022
 
 Author: Ghani Rafif
 Repo: <github.com/ekickx/clipboard-image.nvim>
@@ -17,6 +17,7 @@ CONTENTS                                             *clipboard-image-contents*
       4.2.1. Img Dir                           |clipboard-image-config-img_dir|
       4.2.2. Img Dir Txt                   |clipboard-image-config-img_dir_txt|
       4.2.3. Img Name                         |clipboard-image-config-img_name|
+      4.2.3. Img Format                     |clipboard-image-config-img_format|
       4.2.4. Img Handler                   |clipboard-image-config-img_handler|
       4.2.5. Affix                               |clipboard-image-config-affix|
   5. Tips                                                |clipboard-image-tips|
@@ -158,6 +159,27 @@ Options~
 	  end
 <
 	  Example result: "2021-04-13-10-04-18"
+
+                                              *clipboard-image-config-img_format*
+  img_format~
+	Format for the pasted image.
+
+	Type:~
+	  string
+
+	Default:~
+	  "png"
+
+	Note:
+	  It's possible to create custom paste commands for specific formats
+	  in your `init.lua` file.
+>
+:>>>>>>\  vim.api.nvim_create_user_command(
+:>>>>>>\    'PasteJPG',
+:>>>>>>\    function(opts) require'clipboard-image.paste'.paste_img({img_format='jpg'}) end,
+:>>>>>>\    { nargs = 0 }
+:>>>>>>\  )
+<
 
                                            *clipboard-image-config-img_handler*
   img_handler~
