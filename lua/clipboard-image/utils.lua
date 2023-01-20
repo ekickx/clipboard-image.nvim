@@ -34,7 +34,7 @@ M.get_clip_command = function()
     cmd_paste = "pngpaste '%s'"
   elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
-    cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
+    cmd_paste = "(" .. cmd_check .. ").Save('%s', 'png')"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
     cmd_paste = 'powershell.exe "' .. cmd_paste .. '"'
   end
@@ -56,14 +56,14 @@ end
 
 ---Check if clipboard contain image data
 ---See also: [Data URI scheme](https://en.wikipedia.org/wiki/Data_URI_scheme)
----@param content string #clipboard content
+---@param content table #clipboard content
 M.is_clipboard_img = function(content)
   local this_os = M.get_os()
   if this_os == "Linux" and vim.tbl_contains(content, "image/png") then
     return true
   elseif this_os == "Darwin" and string.sub(content[1], 1, 9) == "iVBORw0KG" then -- Magic png number in base64
     return true
-  elseif this_os == "Windows" or this_os == "Wsl" and content ~= nil then
+  elseif this_os == "Windows" or this_os == "Wsl" and next(content) ~= nil then
     return true
   end
   return false
