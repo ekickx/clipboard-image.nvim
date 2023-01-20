@@ -34,7 +34,7 @@ M.get_clip_command = function()
     cmd_paste = "pngpaste '%s'"
   elseif this_os == "Windows" or this_os == "Wsl" then
     cmd_check = "Get-Clipboard -Format Image"
-    cmd_paste = "$content = " .. cmd_check .. ";$content.Save('%s', 'png')"
+    cmd_paste = "(" .. cmd_check .. ").Save('%s', 'png')"
     cmd_check = 'powershell.exe "' .. cmd_check .. '"'
     cmd_paste = 'powershell.exe "' .. cmd_paste .. '"'
   end
