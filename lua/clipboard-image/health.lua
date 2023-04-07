@@ -47,7 +47,7 @@ end
 M.check = function()
   local is_dep_exist, report_msg = M.check_current_dep()
 
-  health.report_start "Checking dependencies"
+  vim.health.report_start "Checking dependencies"
   if is_dep_exist then
     vim.health.report_ok(report_msg)
   else
