@@ -1,6 +1,5 @@
 local M = {}
 local utils = require "clipboard-image.utils"
-local health = require "health"
 
 local packages = {
   x11 = { name = "xclip", binary = "xclip" },
@@ -48,11 +47,11 @@ end
 M.check = function()
   local is_dep_exist, report_msg = M.check_current_dep()
 
-  health.report_start "Checking dependencies"
+  vim.health.report_start "Checking dependencies"
   if is_dep_exist then
-    health.report_ok(report_msg)
+    vim.health.report_ok(report_msg)
   else
-    health.report_error(report_msg)
+    vim.health.report_error(report_msg)
   end
 end
 
