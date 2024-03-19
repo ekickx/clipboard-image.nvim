@@ -56,13 +56,14 @@ require 'clipboard-image.init'.setup()
 | `<file-type>` | [`img_opts`](#image-options) | Value of `img_opts` for specific filetype.<br> Run `:set filetype?` to get filetype name.<br>     |
 
 #### Image Options
-| Field         | Type                 | Default Value                                                                                       | Description                                                                                                            |
-|---------------|----------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| `img_name`    | `string`, `function` | `function () return os.date('%Y-%m-%d-%H-%M-%S') end` <br>*Example result: `"2021-08-21-16-14-17"`* | Image's name                                                                                                           |
-| `img_dir`     | `string`, `function` | `"img"`                                                                                             | Directory to save the image                                                                                            |
-| `img_dir_txt` | `string`, `function` | `"img"`                                                                                             | Directory on the text/buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`   |
-|`img_handler`  | `function`           | `function(img)  end`                                                | Function that will handle image after pasted.<br>`img` is a table that contain image's `name` and `path`|
-| `affix`       | `string`, `function` | `default`: `"%s"`<br> `markdown`: `"![](%s)"`</br>`asciidoc`: `"image::%s[]"`                                                       | String that sandwiched the image's path                                                                                |
+| Field | Type | Default Value | Description |
+|---|---|---|---|
+| `img_name` | `string`, `function` | `function () return os.date('%Y-%m-%d-%H-%M-%S') end` <br>*Example result: `"2021-08-21-16-14-17"`* | Image's name |
+| `img_dir` | `string`, `function` | `"img"` | Directory to save the image |
+| `img_dir_txt` | `string`, `function` | `"img"` | Directory on the text/buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img` |
+| `img_format` | `string`, `function` | `"png"` | Format of the pasted image. |
+| `img_handler` | `function` | `function(img)  end` | Function that will handle image after pasted.<br>`img` is a table that contain image's `name` and `path` |
+| `affix` | `string`, `function` | `default`: `"%s"`<br> `markdown`: `"![](%s)"`<br>`asciidoc`: `"image::%s[]"`<br>`org`: `"[[%s]]"` | String that sandwiched the image's path |
 
 ### Paste
 | Function    | Parameter                                | Return | Description |

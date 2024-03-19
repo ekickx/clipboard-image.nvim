@@ -46,8 +46,10 @@ require'clipboard-image'.setup {
   default = {
     img_dir = "images",
     img_name = function() return os.date('%Y-%m-%d-%H-%M-%S') end, -- Example result: "2021-04-13-10-04-18"
-    affix = "<\n  %s\n>" -- Multi lines affix
+    img_format = "jpg", -- Image will be pasted as JPG. NEW (PR #38)
+    affix = "<\n  %s\n>", -- Multi lines affix
   },
+
   -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
   -- If you're uncertain what to name your field to, you can run `lua print(vim.bo.filetype)`
   -- Missing options from `markdown` field will be replaced by options from `default` field
@@ -80,13 +82,14 @@ require'clipboard-image'.setup {
 }
 ```
 
-|Options|Default|Description|
+| Options | Default | Description |
 |---|---|---|
-|`img_dir`|`"img"`|Directory where the image from clipboard will be copied to|
-|`img_dir_txt`|`"img"`|Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img`|
-|`img_name`|`function() return os.date('%Y-%m-%d-%H-%M-%S') end`|Image's name|
-|`img_handler`|`function(img)  end`|Function that will handle image after pasted.<br>`img` is a table that contain pasted image's `name` and `path`|
-|`affix`|`default`: `"%s"`</br>`markdown`: `"![](%s)"`</br>`asciidoc`: `"image::%s[]"`|String that sandwiched the image's path|
+| `img_dir` | `"img"` | Directory where the image from clipboard will be copied to |
+| `img_dir_txt` | `"img"` | Directory that will be inserted to buffer.<br> Example: Your actual dir is `src/assets/img` but your dir on **text** or buffer is `/assets/img` |
+| `img_name` | `function() return os.date('%Y-%m-%d-%H-%M-%S') end` | Image's name |
+| `img_format` | `"png"` | Format for the pasted image |
+| `img_handler` | `function(img)  end` | Function that will handle image after pasted.<br>`img` is a table that contain pasted image's `name` and `path` |
+| `affix` | `default`: `"%s"`<br>`markdown`: `"![](%s)"`<br>`asciidoc`: `"image::%s[]"`<br>`org`: `"[[%s]]"` | String that sandwiched the image's path |
 
 </details>
 

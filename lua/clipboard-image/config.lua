@@ -9,12 +9,16 @@ M.config = {
     end,
     img_handler = function(img) end,
     affix = "%s",
+    img_format = "png",
   },
   asciidoc = {
     affix = "image::%s[]",
   },
   markdown = {
     affix = "![](%s)",
+  },
+  org = {
+    affix = "[[%s]]",
   },
 }
 
@@ -57,12 +61,17 @@ end
 ---@param config_toload table
 ---@return table loaded_config
 M.load_config = function(config_toload)
+  local img_format = M.load_opt(config_toload.img_format)
+  local img_ext = "."..img_format
+  if img_format == "jpg" then img_format = "jpeg" end
   return {
     affix = M.load_opt(config_toload.affix),
     img_name = M.load_opt(config_toload.img_name),
     img_dir = M.load_opt(config_toload.img_dir),
     img_dir_txt = M.load_opt(config_toload.img_dir_txt),
     img_handler = config_toload.img_handler,
+    img_format = img_format,
+    img_ext = img_ext,
   }
 end
 
